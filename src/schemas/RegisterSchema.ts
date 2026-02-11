@@ -1,14 +1,14 @@
-export const RegisterSchema = {
-    type: 'object',
-    properties: {
-        username: { type: 'string', minLength: 1 },
-        email: { type: 'string', format: 'email' },
-        password: { type: 'string', minLength: 6 },
-        role: { type: 'string', enum: ['user', 'admin','projectOwner'] },
-        bio: { type: 'string', default: '' },
-        techStack: { type: 'array', items: { type: 'string' },default: [] },
-        projectsJoined: { type: 'array', items: { type: 'string' },default: [] },
-    },
-    required: ['email', 'password', 'username','role'],
-    additionalProperties: false,
-}
+import {z} from 'zod'
+
+export const usernameValidation = z
+    .string()
+    .min(2,"Username must be at least 2 characters")
+    .max(20,"Username must be at most 20 characters")
+    .regex(/^[a-zA-Z0-9_]+$/,"Username must not contain special character")
+
+export const loginSchema = z.object({
+    username: usernameValidation,
+    email: z.email({message:"Invalid Email address"}),
+    password: z.string().min(8,{message: "Password must be at least 8 Characters"}),
+    role: z.enum(['user','projectOwner'],{message:"Role must be either user or projectOwner"})
+})
