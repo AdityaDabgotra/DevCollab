@@ -1,30 +1,36 @@
 import mongoose from "mongoose";
 
-type connectionObject = {
-    isConnected?: number;
+const MONGODB_URI = process.env.MONGODB_URI as string;
+
+if (!MONGODB_URI) {
+  throw new Error("Please define MONGODB_URI in environment variables");
 }
 
-const connection: connectionObject = {};
+// Global caching for Next.js (important in dev)
+declare global {
+  var mongooseConnection: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
+}
 
-async function dbConnect():Promise<void> {
-    if (connection.isConnected) {
-        console.log("Already connected to the database");
-        return;
-    }
+let cached = global.mongooseConnection;
 
-    try {
-        const db = await mongoose.connect(process.env.MONGODB_URI || "")
+if (!cached) {
+  cached = global.mongooseConnection = { conn: null, promise: null };
+}
 
-        connection.isConnected = db.connections[0].readyState;
+async function dbConnect(): Promise<typeof mongoose> {
+  if (cached.conn) {
+    return cached.conn;
+  }
 
-        console.log("Database connected successfully");
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+  }
 
-        
-    } catch (error) {
-        console.log("Database connection error:", error);
-        
-        process.exit(1);
-    }
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
 
 export default dbConnect;
