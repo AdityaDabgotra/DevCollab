@@ -9,7 +9,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const parsedData = registerSchema.parse(body);
+    let parsedData;
+    try {
+      parsedData = registerSchema.parse(body);
+    } catch (validationError:any) {
+      return Response.json(
+        { success: false, message: "Validation Error"},
+        { status: 400 }
+      );
+    }
 
     const { username, email, password, role } = parsedData;
 
