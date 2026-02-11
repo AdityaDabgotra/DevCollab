@@ -6,7 +6,6 @@ if (!MONGODB_URI) {
   throw new Error("Please define MONGODB_URI in environment variables");
 }
 
-// Global caching for Next.js (important in dev)
 declare global {
   var mongooseConnection: {
     conn: typeof mongoose | null;
