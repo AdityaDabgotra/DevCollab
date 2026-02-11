@@ -1,51 +1,72 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface User {
+export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  role: string;
+  role: "user" | "projectOwner";
   bio?: string;
   techStack?: string[];
-  projectsJoined?:string[];
+  projectsJoined?: mongoose.Types.ObjectId[];
 }
 
-const UserSchema: Schema<User> = new Schema({
-  username: {
+const UserSchema = new Schema<IUser>(
+  {
+    username: {
       type: String,
-      required: [true,"Username is Required"],
-      trim:true,
-      unique: true
-  },
-  email: {
-      type: String,
-      required: [true,"Email is Required"],
+      required: [true, "Username is required"],
+      trim: true,
       unique: true,
-      match: [/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g,"Please use a valid Email address"]
-  },
-  password: {
-      type: String,
-      required: [true,"Password is Required"]
-  },
-  role: {
-      type: String,
-      required: [true,"Role is Required"],
-      enum: ['user', 'projectOwner']
-  },
-  bio: {
-      type: String,
-      default: ''
-  },
-  techStack: {
-      type: [String],
-      default: []
-  },
-  projectsJoined: {
-      type: [String],
-      default: []
-  }
-})
+    },
 
-const UserModel = (mongoose.models.User as mongoose.Model<User>) || (mongoose.model<User>("User",UserSchema))
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please use a valid email address",
+      ],
+    },
+
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      select: false,
+    },
+
+    role: {
+      type: String,
+      enum: ["user", "projectOwner"],
+      required: true,
+    },
+
+    bio: {
+      type: String,
+      default: "",
+      trim: true,
+      maxlength: 500,
+    },
+
+    techStack: {
+      type: [String],
+      default: [],
+    },
+
+    projectsJoined: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const UserModel: Model<IUser> =
+  mongoose.models.User ||
+  mongoose.model<IUser>("User", UserSchema);
 
 export default UserModel;

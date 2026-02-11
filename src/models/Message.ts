@@ -1,31 +1,37 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface Message {
-    projectId: string;
-    sender: string;
-    content: string;
-    timestamp: Date;
+export interface IMessage extends Document {
+  projectId: mongoose.Types.ObjectId;
+  sender: mongoose.Types.ObjectId;
+  content: string;
+  timestamp: Date;
 }
 
-const MessageSchema: Schema<Message> = new Schema({
+const MessageSchema = new Schema<IMessage>(
+  {
     projectId: {
-        type: String,
-        required: [true, "Project ID is Required"],
+      type: Schema.Types.ObjectId,
+      ref: "Project",
+      required: [true, "Project ID is required"],
     },
     sender: {
-        type: String,
-        required: [true, "Sender is Required"],
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Sender is required"],
     },
     content: {
-        type: String,
-        required: [true, "Content is Required"],
+      type: String,
+      required: [true, "Content is required"],
+      trim: true,
     },
-    timestamp: {
-        type: Date,
-        default: Date.now,
-    },
-})
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const MessageModel = (mongoose.models.Message as mongoose.Model<Message>) || (mongoose.model<Message>("Message", MessageSchema))
+const MessageModel: Model<IMessage> =
+  mongoose.models.Message ||
+  mongoose.model<IMessage>("Message", MessageSchema);
 
 export default MessageModel;

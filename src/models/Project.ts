@@ -1,48 +1,67 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface Projects {
+export interface IProject extends Document {
   title: string;
   description: string;
   techStack: string[];
-  owner: string;
-  applicants: string[];
-  status: string;
-  members: string[];
+  owner: mongoose.Types.ObjectId;
+  applicants: mongoose.Types.ObjectId[];
+  status: "open" | "closed";
+  members: mongoose.Types.ObjectId[];
 }
 
-const ProjectSchema: Schema<Projects> = new Schema({
-  title: {
-    type: String,
-    required: [true, "Title is Required"],
-    trim: true,
-  },
-  description: {
-    type: String,
-    required: [true, "Description is Required"],
-  },
-  techStack: {
-    type: [String],
-    default: [],
-  },
-  owner: {
-    type: String,
-    required: [true, "Owner is Required"],
-  },
-  applicants: {
-    type: [String],
-    default: [],
-  },
-  status: {
-    type: String,
-    enum: ['open', 'closed'],
-    default: 'open',
-  },
-  members: {
-    type: [String],
-    default: [],
-  },
-})
+const ProjectSchema = new Schema<IProject>(
+  {
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+      trim: true,
+    },
 
-const ProjectModel = (mongoose.models.Project as mongoose.Model<Projects>) || (mongoose.model<Projects>("Project", ProjectSchema))
+    description: {
+      type: String,
+      required: [true, "Description is required"],
+      trim: true,
+    },
+
+    techStack: {
+      type: [String],
+      default: [],
+    },
+
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Owner is required"],
+    },
+
+    applicants: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    status: {
+      type: String,
+      enum: ["open", "closed"],
+      default: "open",
+    },
+
+    members: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const ProjectModel: Model<IProject> =
+  mongoose.models.Project ||
+  mongoose.model<IProject>("Project", ProjectSchema);
 
 export default ProjectModel;
