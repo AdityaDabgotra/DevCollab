@@ -26,14 +26,8 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/explore" className="hover:text-[#7747ff] transition">
-            Explore
-          </Link>
           <Link href="/projects" className="hover:text-[#7747ff] transition">
             Projects
-          </Link>
-          <Link href="/collaborations" className="hover:text-[#7747ff] transition">
-            Collaborations
           </Link>
 
           {status === "loading" ? null : session ? (
@@ -53,9 +47,9 @@ const Navbar = () => {
               </button>
 
               {/* Avatar */}
-              <div className="w-9 h-9 rounded-full bg-[#7747ff] text-white flex items-center justify-center font-semibold">
+              <Link href="/profile" className="w-9 h-9 rounded-full bg-[#7747ff] text-white flex items-center justify-center font-semibold cursor-pointer">
                 {session.user?.username?.charAt(0).toUpperCase()}
-              </div>
+              </Link>
             </div>
           ) : (
             <div className="flex items-center gap-3">
@@ -87,9 +81,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden border-t px-4 py-4 flex flex-col gap-3 bg-white">
-          <Link href="/explore">Explore</Link>
           <Link href="/projects">Projects</Link>
-          <Link href="/collaborations">Collaborations</Link>
 
           {session ? (
             <>
