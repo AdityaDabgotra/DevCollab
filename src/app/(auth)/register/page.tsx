@@ -1,4 +1,5 @@
 "use client";
+import { ApiResponse } from "@/types/ApiResponse";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,14 +20,14 @@ const Form = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/register", {
+      const response = await axios.post<ApiResponse>("/api/register", {
         username,
         email,
         password,
         role,
       });
 
-      if (response.status === 200) {
+      if (response.data.success){
         toast.success("Account created successfully!");
         router.replace("/login");
       } else {
