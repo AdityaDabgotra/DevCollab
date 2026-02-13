@@ -21,12 +21,16 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any): Promise<any> {
         await dbConnect();
 
+        if (!credentials?.password) {
+          throw new Error("Password required");
+        }
+
         const user = await UserModel.findOne({
           $or: [
             { email: credentials.identifier },
-            { userName: credentials.identifier },
+            { username: credentials.identifier },
           ],
-        });
+        }).select("+password");
 
         if (!user) {
           throw new Error("No user found with the given credentials");
@@ -48,16 +52,18 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token._id = user._id?.toString();
-        token.username = (user as any).userName;
+        token._id = user.id;
+        token.username = user.username;
+        token.role = user.role;
       }
-
       return token;
     },
+
     async session({ session, token }) {
-      if (token) {
-        session.user._id = token._id?.toString();
-        session.user.username = token.username;
+      if (session.user) {
+        session.user._id = token._id as string;
+        session.user.username = token.username as string;
+        session.user.role = token.role as string;
       }
       return session;
     },

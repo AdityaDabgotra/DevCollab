@@ -12,9 +12,9 @@ export async function POST(request: Request) {
     let parsedData;
     try {
       parsedData = registerSchema.parse(body);
-    } catch (validationError:any) {
+    } catch (validationError: any) {
       return Response.json(
-        { success: false, message: "Validation Error"},
+        { success: false, message: "Validation Error" },
         { status: 400 }
       );
     }
@@ -22,6 +22,18 @@ export async function POST(request: Request) {
     const { username, email, password, role } = parsedData;
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await UserModel.findOne({
+      $or: [{ username }, { email }],
+    });
+    if (existingUser) {
+      return Response.json(
+        {
+          success: false,
+          message: "Username or Email already exists",
+        },
+        { status: 400 }
+      );
+    }
 
     await UserModel.create({
       username,
@@ -32,17 +44,9 @@ export async function POST(request: Request) {
 
     return Response.json(
       { success: true, message: "User Registered Successfully." },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error: any) {
-
-    if (error.code === 11000) {
-      return Response.json(
-        { success: false, message: "Username or Email already exists" },
-        { status: 400 }
-      );
-    }
-
     console.error("Error in signUp route:", error);
 
     return Response.json(
