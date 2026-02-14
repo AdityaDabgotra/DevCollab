@@ -1,10 +1,13 @@
 "use client";
 import { ApiResponse } from "@/types/ApiResponse";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { set } from "mongoose";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useDebounceCallback } from "usehooks-ts";
 
 const Form = () => {
   const [username, setUsername] = useState("");
@@ -12,10 +15,44 @@ const Form = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"user" | "projectOwner">("user");
 
+  const [usernameMessage, setUsernameMessage] = useState("");
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState("password");
+
   const router = useRouter();
 
-  const onSubmit = async (e:any) => {
+  const debouncedCheckUsername = useDebounceCallback(async (value: string) => {
+    if (!value) {
+      setUsernameMessage("");
+      return;
+    }
+
+    try {
+      setIsCheckingUsername(true);
+
+      const response = await axios.post<ApiResponse>(
+        "/api/check-unique-username",
+        { username: value }
+      );
+
+      setUsernameMessage(response.data.message);
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      setUsernameMessage(
+        axiosError.response?.data.message || "Error checking username"
+      );
+    } finally {
+      setIsCheckingUsername(false);
+    }
+  }, 500);
+
+  const handleUsernameChange = (value: string) => {
+    setUsername(value);
+    debouncedCheckUsername(value);
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -27,7 +64,7 @@ const Form = () => {
         role,
       });
 
-      if (response.data.success){
+      if (response.data.success) {
         toast.success("Account created successfully!");
         router.replace("/login");
       } else {
@@ -52,27 +89,40 @@ const Form = () => {
           Create an account and start collaborating!
         </div>
 
-        {/* ✅ attach onSubmit to form */}
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           {/* Username */}
           <div>
-            <label className="block text-gray-600 text-sm mb-2">
-              Username
-            </label>
+            <label className="block text-gray-600 text-sm mb-2">Username</label>
             <input
               type="text"
               className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => handleUsernameChange(e.target.value)}
               required
             />
+
+            {isCheckingUsername ? (
+              <p className="text-xs text-blue-500 mt-1">
+                Checking availability...
+              </p>
+            ) : (
+              usernameMessage && (
+                <p
+                  className={`text-xs mt-1 ${
+                    usernameMessage.toLowerCase().includes("available")
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {usernameMessage}
+                </p>
+              )
+            )}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-gray-600 text-sm mb-2">
-              Email
-            </label>
+            <label className="block text-gray-600 text-sm mb-2">Email</label>
             <input
               type="email"
               className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
@@ -83,20 +133,27 @@ const Form = () => {
           </div>
 
           {/* Password */}
-          <div>
-            <label className="block text-gray-600 text-sm mb-2">
-              Password
-            </label>
+          <div className="relative">
+            <label className="block text-gray-600 text-sm mb-2">Password</label>
+
             <input
-              type="password"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              type={showPassword}
+              id="password"
+              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 pr-10 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <Image onClick={setShowPassword.bind(null, showPassword === "password" ? "text" : "password")}
+              src="/eye.svg"
+              alt="toggle password"
+              width={20}
+              height={20}
+              className="absolute right-3 top-9.5 cursor-pointer opacity-70 hover:opacity-100"
+            />
           </div>
 
-          {/* ✅ Role Dropdown */}
+          {/* Role Dropdown */}
           <div>
             <label className="block text-gray-600 text-sm mb-2">
               Select Role
@@ -113,7 +170,7 @@ const Form = () => {
             </select>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
