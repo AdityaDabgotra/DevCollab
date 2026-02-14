@@ -1,6 +1,7 @@
 "use client";
 import { loginSchema } from "@/schemas/LoginSchema";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +12,7 @@ const Form = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState("password");
 
   const onSubmit = async (e:any) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ const Form = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 -mt-16.25">
       <div className="max-w-md w-full flex flex-col p-4 rounded-md text-black bg-white shadow-md">
         <div className="text-2xl font-bold mb-2 text-[#1e0e4b] text-center">
           Welcome back to <span className="text-[#7747ff]">DevCollab</span>
@@ -70,19 +72,26 @@ const Form = () => {
             />
           </div>
 
-          <div>
-            <label className="block text-gray-600 text-sm mb-2">
-              Password
-            </label>
+          <div className="relative">
+            <label className="block text-gray-600 text-sm mb-2">Password</label>
+
             <input
-              type="password"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              type={showPassword}
+              id="password"
+              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 pr-10 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <Image onClick={setShowPassword.bind(null, showPassword === "password" ? "text" : "password")}
+              src="/eye.svg"
+              alt="toggle password"
+              width={20}
+              height={20}
+              className="absolute right-3 top-9.5 cursor-pointer opacity-70 hover:opacity-100"
+            />
           </div>
-
+          
           <button
             type="submit"
             disabled={loading}
