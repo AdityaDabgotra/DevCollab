@@ -1,8 +1,7 @@
 "use client";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios, { AxiosError } from "axios";
-import { set } from "mongoose";
-import Image from "next/image";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,7 +17,7 @@ const Form = () => {
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState("password");
+  const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
 
@@ -137,20 +136,21 @@ const Form = () => {
             <label className="block text-gray-600 text-sm mb-2">Password</label>
 
             <input
-              type={showPassword}
+              type={showPassword ? "text" : "password"}
               id="password"
               className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 pr-10 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Image onClick={setShowPassword.bind(null, showPassword === "password" ? "text" : "password")}
-              src="/eye.svg"
-              alt="toggle password"
-              width={20}
-              height={20}
-              className="absolute right-3 top-9.5 cursor-pointer opacity-70 hover:opacity-100"
-            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#7747ff] mt-3.5"
+            >
+              {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+            </button>
           </div>
 
           {/* Role Dropdown */}

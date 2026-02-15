@@ -1,7 +1,7 @@
 "use client";
 import { loginSchema } from "@/schemas/LoginSchema";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,9 +12,9 @@ const Form = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState("password");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (e:any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
@@ -32,9 +32,11 @@ const Form = () => {
       redirect: false,
     });
     console.log(res);
-    
+
     if (res?.error) {
-      toast.error("Error logging in. Please check your credentials and try again.");
+      toast.error(
+        "Error logging in. Please check your credentials and try again."
+      );
       setLoading(false);
       return;
     }
@@ -76,22 +78,23 @@ const Form = () => {
             <label className="block text-gray-600 text-sm mb-2">Password</label>
 
             <input
-              type={showPassword}
+              type={showPassword ? "text" : "password"}
               id="password"
               className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 pr-10 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Image onClick={setShowPassword.bind(null, showPassword === "password" ? "text" : "password")}
-              src="/eye.svg"
-              alt="toggle password"
-              width={20}
-              height={20}
-              className="absolute right-3 top-9.5 cursor-pointer opacity-70 hover:opacity-100"
-            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#7747ff] mt-3.5"
+            >
+              {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+            </button>
           </div>
-          
+
           <button
             type="submit"
             disabled={loading}
