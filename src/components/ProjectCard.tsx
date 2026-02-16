@@ -40,7 +40,7 @@ const ProjectCard = ({
       // }
 
       setApplied(true);
-      toast.success("Applied Successfully!");
+      toast.success(`Applied to project ${title}`);
     } catch (error) {
       toast.error("Failed to apply. Please try again.");
     } finally {
