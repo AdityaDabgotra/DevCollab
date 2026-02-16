@@ -26,9 +26,17 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/projects" className="hover:text-[#7747ff] transition">
-            Projects
-          </Link>
+          {
+            session ? (
+              session?.user?.role === "user"?
+            (<Link href="/see-projects" className="hover:text-[#7747ff] transition">
+              See Projects
+            </Link>) :
+            (<Link href="/create-project" className="hover:text-[#7747ff] transition">
+              Create Project
+            </Link>)
+            ) : null
+          }
 
           {status === "loading" ? null : session ? (
             <div className="flex items-center gap-4">
@@ -81,7 +89,12 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden border-t px-4 py-4 flex flex-col gap-3 bg-white">
-          <Link href="/projects">Projects</Link>
+          {
+            session ? (
+              session?.user?.role === "user"? (<Link href="/see-projects">Projects</Link>):
+              (<Link href="/create-project">Create Project</Link>)
+            ):null
+          }
 
           {session ? (
             <>
