@@ -31,7 +31,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Username or Email already exists",
         },
-        { status: 400 }
+        { status: 200 }
       );
     }
 

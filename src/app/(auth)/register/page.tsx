@@ -67,7 +67,7 @@ const Form = () => {
         toast.success("Account created successfully!");
         router.replace("/login");
       } else {
-        toast.error("Error creating account.");
+        toast.error(response.data.message || "Registration failed. Please try again.");
       }
     } catch (error) {
       console.log("Error registering:", error);
