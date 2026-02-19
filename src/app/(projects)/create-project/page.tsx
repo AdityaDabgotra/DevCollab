@@ -44,6 +44,8 @@ export default function CreateProjectPage() {
       setStatus("open");
     } catch (error) {
       toast.error("Something went wrong");
+      console.log(error);
+      
     } finally {
       setLoading(false);
     }
