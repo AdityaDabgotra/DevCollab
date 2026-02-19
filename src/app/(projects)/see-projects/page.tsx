@@ -22,7 +22,7 @@ const SeeProjectsPage = () => {
   const fetchProjects = async () => {
     try {
       const res = await axios.get("/api/projects");
-      setProjects(res.data.projects);
+      setProjects(res.data.data);
     } catch (error) {
       console.error("Failed to fetch projects", error);
     } finally {
