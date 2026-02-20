@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import mongoose from "mongoose";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 type ProjectCardProps = {
@@ -13,6 +13,7 @@ type ProjectCardProps = {
   techStack?: string[];
   owner: string;
   status?: "open" | "closed";
+  alreadyApplied: boolean;
 };
 
 const ProjectCard = ({
@@ -23,10 +24,14 @@ const ProjectCard = ({
   owner,
   techStack,
   status = "open",
+  alreadyApplied,
 }: ProjectCardProps) => {
-
-  const [applied, setApplied] = useState(false);
+  const [applied, setApplied] = useState(alreadyApplied);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setApplied(alreadyApplied);
+  }, [alreadyApplied]);
 
   const handleApply = async () => {
     if (status !== "open" || applied) return;
@@ -35,8 +40,9 @@ const ProjectCard = ({
       setLoading(true);
 
       const response = await axios.post("/api/apply-project", {
-        projectId: id
+        projectId: id,
       });
+
       if (!response.data.success) {
         toast.error(response.data.message);
         return;
@@ -56,12 +62,10 @@ const ProjectCard = ({
   return (
     <div className="w-64 bg-white shadow-[0px_0px_15px_rgba(0,0,0,0.09)] p-6 space-y-3 relative overflow-hidden rounded-xl hover:scale-102 transition-transform duration-300 flex flex-col justify-between">
       <div>
-        {/* Index bubble */}
         <div className="w-24 h-24 bg-[#7747ff] rounded-full absolute -right-5 -top-7 flex items-end justify-start">
           <p className="mb-5 ml-6 text-white text-2xl font-bold">{index}</p>
         </div>
 
-        {/* Icon + Owner */}
         <div className="flex items-center gap-2">
           <div className="fill-[#7747ff] w-10">
             <svg viewBox="0 0 24 24">
@@ -71,15 +75,12 @@ const ProjectCard = ({
           <p className="text-sm font-semibold text-[#7747ff]">{owner}</p>
         </div>
 
-        {/* Title */}
         <h1 className="font-bold text-xl text-[#1e0e4b]">{title}</h1>
 
-        {/* Description */}
         <p className="text-[13px] text-zinc-500 leading-6 line-clamp-3">
           {desc}
         </p>
 
-        {/* Tech Stack */}
         {techStack && techStack.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-1">
             {techStack.slice(0, 5).map((tech, i) => (
@@ -99,7 +100,6 @@ const ProjectCard = ({
         )}
       </div>
 
-      {/* Apply Button */}
       <button
         onClick={handleApply}
         disabled={loading || applied || isClosed}
