@@ -24,5 +24,12 @@ export async function GET(request: Request) {
         message:"Data Fetched Successfully",
         data:projects
     })
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error fetching projects:",error);
+    return Response.json(
+      {success:false,
+        message:error
+      },{status:500}
+    )
+  }
 }
