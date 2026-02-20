@@ -1,6 +1,8 @@
 "use client";
+
 import axios from "axios";
 import mongoose from "mongoose";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -23,6 +25,8 @@ const ProjectCard = ({
   techStack,
   status = "open",
 }: ProjectCardProps) => {
+  const { data: session } = useSession();
+
   const [applied, setApplied] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -32,12 +36,14 @@ const ProjectCard = ({
     try {
       setLoading(true);
 
-      // const response = await axios.post("/api/apply-project", { projectId: id });
-
-      // if (!response.data.success) {
-      //   toast.error("Failed to apply.");
-      //   return;
-      // }
+      const response = await axios.post("/api/apply-project", {
+        projectId: id,
+        user:session?.user.username
+      });
+      if (!response.data.success) {
+        toast.error("Error Applying to this Project");
+        return;
+      }
 
       setApplied(true);
       toast.success(`Applied to project ${title}`);
