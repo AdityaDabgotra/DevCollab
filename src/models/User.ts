@@ -8,6 +8,7 @@ export interface IUser extends Document {
   bio?: string;
   techStack?: string[];
   projectsJoined?: mongoose.Types.ObjectId[];
+  projectsApplied?: mongoose.Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -56,6 +57,14 @@ const UserSchema = new Schema<IUser>(
       {
         type: Schema.Types.ObjectId,
         ref: "Project",
+        default:[]
+      },
+    ],
+    projectsApplied: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+        default:[],
       },
     ],
   },

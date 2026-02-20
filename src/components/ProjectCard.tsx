@@ -38,7 +38,7 @@ const ProjectCard = ({
         projectId: id
       });
       if (!response.data.success) {
-        toast.error("Error Applying to this Project");
+        toast.error(response.data.message);
         return;
       }
 
