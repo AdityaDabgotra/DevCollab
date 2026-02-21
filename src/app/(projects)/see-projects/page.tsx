@@ -47,7 +47,7 @@ const SeeProjectsPage = () => {
       {/* Heading */}
       <div className="max-w-7xl mx-auto mb-10">
         <h1 className="text-3xl font-bold text-[#1e0e4b]">
-          Explore Projects 🚀
+          Explore Projects
         </h1>
         <p className="text-zinc-500 mt-2">
           Find exciting collaborations and apply to work with amazing devs.
