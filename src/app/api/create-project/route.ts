@@ -2,6 +2,8 @@ import dbConnect from "@/lib/db";
 import ProjectModel from "@/models/Project";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
+import UserModel from "@/models/User";
+import mongoose from "mongoose";
 
 export async function POST(request: Request) {
   try {
@@ -25,6 +27,17 @@ export async function POST(request: Request) {
       status,
       owner: session.user._id,
     });
+
+    const user = await UserModel.findOne({_id:session.user._id});
+
+    if(!user){
+      return Response.json(
+        { success: false, message: "User Not found" },
+        { status: 401 }
+      );
+    }
+    user.projectsOwned?.push(project._id);
+    await user.save()
 
     return Response.json(
       { success: true, data: project },

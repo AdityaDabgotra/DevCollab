@@ -9,6 +9,7 @@ export interface IUser extends Document {
   techStack?: string[];
   projectsJoined?: mongoose.Types.ObjectId[];
   projectsApplied?: mongoose.Types.ObjectId[];
+  projectsOwned?: mongoose.Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -61,6 +62,13 @@ const UserSchema = new Schema<IUser>(
       },
     ],
     projectsApplied: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+        default:[],
+      },
+    ],
+    projectsOwned: [
       {
         type: Schema.Types.ObjectId,
         ref: "Project",
