@@ -40,8 +40,8 @@ export async function POST(request: Request) {
     await user.save()
 
     return Response.json(
-      { success: true, data: project },
-      { status: 201 }
+      { success: true, message: "Project created successfully" },
+      { status: 200 }
     );
   } catch (error) {
     console.error("Create project error:", error);
