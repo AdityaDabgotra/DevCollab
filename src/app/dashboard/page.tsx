@@ -23,7 +23,7 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
 
   const role = session?.user?.role;
-  const username = session?.user?.username
+  const username = session?.user?.username;
 
   const fetchUserDashboard = async () => {
     try {
@@ -31,7 +31,6 @@ const DashboardPage = () => {
 
       setAppliedProjects(res.data.data.appliedProjects || []);
       setJoinedProjects(res.data.data.joinedProjects || []);
-      
     } catch (error) {
       console.error("Error fetching user projects", error);
     }
@@ -71,12 +70,13 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f5ff] px-6 py-10">
+    <div className="min-h-screen bg-[#f7f5ff] px-6 py-3">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-[#1e0e4b] mb-10">Welcome back {username}</h1>
-        <h1 className="text-3xl font-bold text-[#1e0e4b] mb-10">
-          Dashboard
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1e0e4b] leading-tight">
+          Welcome back,<span className="text-[#7747ff]">{username}</span>
         </h1>
+
+        <div className="w-88 h-1 bg-[#7747ff] rounded-full mt-4 mb-8"></div>
 
         {/* USER ROLE */}
         {role === "user" && (
