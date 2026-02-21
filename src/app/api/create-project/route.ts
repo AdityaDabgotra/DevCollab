@@ -24,7 +24,6 @@ export async function POST(request: Request) {
       techStack,
       status,
       owner: session.user._id,
-      members: [session.user._id],
     });
 
     return Response.json(

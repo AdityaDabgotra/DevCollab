@@ -39,6 +39,7 @@ const ProjectSchema = new Schema<IProject>(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+        default:[],
       },
     ],
 
@@ -52,7 +53,9 @@ const ProjectSchema = new Schema<IProject>(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+        default:[],
       },
+
     ],
   },
   {
