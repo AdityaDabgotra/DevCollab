@@ -27,10 +27,11 @@ const DashboardPage = () => {
 
   const fetchUserDashboard = async () => {
     try {
-      const res = await axios.get("/api/user-projects");
+      const res = await axios.get("/api/get-user-projects");
 
-      setAppliedProjects(res.data.appliedProjects || []);
-      setJoinedProjects(res.data.joinedProjects || []);
+      setAppliedProjects(res.data.data.appliedProjects || []);
+      setJoinedProjects(res.data.data.joinedProjects || []);
+      
     } catch (error) {
       console.error("Error fetching user projects", error);
     }

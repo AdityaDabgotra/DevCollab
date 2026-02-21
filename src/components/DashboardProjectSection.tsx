@@ -28,7 +28,7 @@ const DashboardProjectSection = ({ title, projects, emptyMessage }: Props) => {
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {projects.map((project, index) => (
             <ProjectCard
-              key={project._id}
+              key={index}
               id={project._id as any}
               index={index + 1}
               title={project.title}
