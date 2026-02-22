@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       );
     }
     user.projectsOwned?.push(project._id);
+    console.log(user.projectsOwned);
+    
     await user.save()
 
     return Response.json(

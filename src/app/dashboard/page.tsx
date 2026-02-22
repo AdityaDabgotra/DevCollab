@@ -39,7 +39,8 @@ const DashboardPage = () => {
   const fetchOwnerProjects = async () => {
     try {
       const res = await axios.get("/api/owner-projects");
-      setCreatedProjects(res.data.projects || []);
+      
+      setCreatedProjects(res.data.data || []);
     } catch (error) {
       console.error("Error fetching owner projects", error);
     }
@@ -48,12 +49,13 @@ const DashboardPage = () => {
   useEffect(() => {
     if (status === "authenticated") {
       const load = async () => {
-        await fetchUserDashboard();
+        if(role === "user"){
+          await fetchUserDashboard();
+        }
 
         if (role === "projectOwner") {
           await fetchOwnerProjects();
         }
-
         setLoading(false);
       };
 
