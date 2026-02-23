@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardProjectSection from "@/components/DashboardProjectSection";
+import DashboardProjectSection2 from "@/components/DashboardProjectSection2";
 
 type Project = {
   _id: string;
@@ -89,7 +90,7 @@ const DashboardPage = () => {
               emptyMessage="You haven't applied to any projects yet."
             />
 
-            <DashboardProjectSection
+            <DashboardProjectSection2
               title="Joined Projects"
               projects={joinedProjects}
               emptyMessage="You are not part of any project yet."
@@ -99,7 +100,7 @@ const DashboardPage = () => {
 
         {/* PROJECT OWNER ROLE */}
         {role === "projectOwner" && (
-          <DashboardProjectSection
+          <DashboardProjectSection2
             title="Your Created Projects"
             projects={createdProjects}
             emptyMessage="You haven't created any projects yet."
