@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       owner: session.user._id,
     });
 
-    const user = await UserModel.findOne({_id:session.user._id});
+    const user = await UserModel.findById(session.user._id);
 
     if(!user){
       return Response.json(
