@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dev Collab",
-  description: "A platform for developers to collaborate on projects, share knowledge, and grow together.",
+  description: "DevCollab is a full-stack web application designed to help developers connect, collaborate, and build projects together in an organized and interactive environment.The platform allows project owners to create and manage projects, review applicants, control project status (open/closed), and communicate with collaborators through an integrated real-time chat system. Developers can explore projects, apply based on their tech stack, and build meaningful collaborations.Built using modern web technologies, DevCollab emphasizes clean UI, scalable backend architecture, and secure role-based functionality.",
 };
 
 export default function RootLayout({
