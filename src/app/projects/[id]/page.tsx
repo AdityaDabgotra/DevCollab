@@ -81,7 +81,7 @@ const Page = () => {
   const isOwner = true;
 
   return (
-    <div className=" bg-[#f7f5ff] flex">
+    <div className="bg-[#f7f5ff] flex min-h-screen">
       {/* LEFT CONTENT */}
       <div className="flex-1 px-8 py-10">
         {/* Header */}
@@ -163,7 +163,7 @@ const Page = () => {
 
                       <div className="flex gap-2 mt-1 flex-wrap">
                         {applicant.techStack?.map((tech) => (
-                          <span
+                              <span
                             key={tech}
                             className="text-xs bg-[#f3f0ff] text-[#7747ff] px-2 py-1 rounded-md"
                           >
@@ -190,7 +190,7 @@ const Page = () => {
       </div>
 
       {/* RIGHT CHAT PANEL */}
-      <div className="w-95 bg-white flex flex-col h-screen max-h-133">
+      <div className="w-95 bg-white flex flex-col max-h-133 sticky top-0">
         {/* Chat Header */}
         <div className="p-4">
           <h3 className="font-bold text-[#1e0e4b]">Project Chat </h3>
