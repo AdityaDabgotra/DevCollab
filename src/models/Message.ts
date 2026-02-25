@@ -24,6 +24,10 @@ const MessageSchema = new Schema<IMessage>(
       required: [true, "Content is required"],
       trim: true,
     },
+    timestamp:{
+      type:Date,
+      default:Date.now()
+    }
   },
   {
     timestamps: true,
