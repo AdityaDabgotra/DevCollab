@@ -1,8 +1,9 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 type Applicant = {
   _id: string;
@@ -20,11 +21,26 @@ const Page = () => {
 
   const [showApplicants, setShowApplicants] = useState(false);
 
-  // 🔁 Replace with real data
-  const applicants: Applicant[] = [
-    { _id: "1", username: "aditya", techStack: ["React", "Node"] },
-    { _id: "2", username: "rahul", techStack: ["Next.js", "MongoDB"] },
-  ];
+  const fetchProject = async ()=>{
+    const response = await axios.post("/api/project-by-id",{id});
+    if(!response.data.success){
+        return;
+    }
+    setApplicants(response.data.data.applicants);
+    console.log(response.data.data);
+  }
+  const fetchApplicants = async ()=>{
+    const response = await 
+  }
+  const [applicants,setApplicants] = useState([])
+    // { _id: "1", username: "aditya", techStack: ["React", "Node"] },
+    // { _id: "2", username: "rahul", techStack: ["Next.js", "MongoDB"] },
+
+  
+  useEffect(()=>{
+    fetchProject();
+    fetchApplicants();
+  },[id])
 
   const isOwner = true;
 
