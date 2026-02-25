@@ -3,7 +3,7 @@ import ProjectModel from "@/models/Project";
 
 export async function GET(request: Request) {
   try {
-    dbConnect();
+    await dbConnect();
     const projects = await ProjectModel.find()
       .populate("owner") // full owner object
       .populate("applicants") // full applicants

@@ -1,14 +1,32 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useEffectEvent, useMemo, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 type Applicant = {
   _id: string;
   username: string;
+  email?: string;
+  bio?: string;
   techStack?: string[];
+  role?: string;
+};
+
+type ProjectOwner = {
+  _id?: string;
+  username: string;
+  email?: string;
+  role?: string;
+};
+
+type Project = {
+  id: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  status: string;
+  owner: ProjectOwner | null;
 };
 
 const Page = () => {
@@ -21,26 +39,44 @@ const Page = () => {
 
   const [showApplicants, setShowApplicants] = useState(false);
 
-  const fetchProject = async ()=>{
-    const response = await axios.post("/api/project-by-id",{id});
-    if(!response.data.success){
-        return;
-    }
-    setApplicants(response.data.data.applicants);
-    console.log(response.data.data);
-  }
-  const fetchApplicants = async ()=>{
-    const response = await 
-  }
-  const [applicants,setApplicants] = useState([])
-    // { _id: "1", username: "aditya", techStack: ["React", "Node"] },
-    // { _id: "2", username: "rahul", techStack: ["Next.js", "MongoDB"] },
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const [project, setProject] = useState<Project>({
+    id: "",
+    title: "",
+    description: "",
+    techStack: [],
+    status: "",
+    owner: null,
+  });
 
-  
-  useEffect(()=>{
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchProject = async () => {
+      try {
+        const response = await axios.post("/api/project-by-id", { id });
+        if (!response.data.success) {
+          return;
+        }
+
+        const data = response.data.data;
+
+        setApplicants(data.applicants || []);
+        setProject({
+          id: data._id,
+          title: data.title || "",
+          description: data.description || "",
+          techStack: data.techStack || [],
+          status: data.status || "",
+          owner: data.owner || null,
+        });
+      } catch (error) {
+        console.error("Failed to fetch project", error);
+      }
+    };
+
     fetchProject();
-    fetchApplicants();
-  },[id])
+  }, [id]);
 
   const isOwner = true;
 
@@ -50,7 +86,7 @@ const Page = () => {
       <div className="flex-1 px-8 py-10">
         {/* Header */}
         <h1 className="text-4xl font-extrabold text-[#1e0e4b]">
-          Project <span className="text-[#7747ff]">#{id}</span>
+          Project <span className="text-[#7747ff]">#{project.id}</span>
         </h1>
 
         <div className="w-40 h-1 bg-[#7747ff] rounded-full mt-4 mb-8" />
@@ -58,16 +94,15 @@ const Page = () => {
         {/* Project Info Card */}
         <div className="bg-white rounded-2xl shadow p-6 space-y-4">
           <h2 className="text-2xl font-bold text-[#1e0e4b]">
-            AI Dev Collaboration Platform
+            {project.title}
           </h2>
 
           <p className="text-zinc-600">
-            Build a real-time collaboration platform for developers with chat,
-            project matching and AI recommendations.
+           {project.description}
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {["Next.js", "MongoDB", "Socket.io", "Tailwind"].map((tech) => (
+            {project.techStack.map((tech) => (
               <span
                 key={tech}
                 className="text-xs bg-[#f3f0ff] text-[#7747ff] px-2 py-1 rounded-md"
@@ -78,7 +113,14 @@ const Page = () => {
           </div>
 
           <p className="text-sm text-zinc-500">
-            Owner: <span className="text-[#7747ff] font-semibold">aditya</span>
+            Owner:{" "}
+            <span className="text-[#7747ff] font-semibold">
+              {project.owner?.username ?? "Unknown"}
+            </span>
+          </p>
+
+          <p className="text-sm text-zinc-500">
+            Status: <span className="font-semibold">{project.status || "N/A"}</span>
           </p>
 
           {/* Owner Controls */}
@@ -109,22 +151,18 @@ const Page = () => {
               <p className="text-zinc-500">No applicants yet.</p>
             ) : (
               <div className="space-y-3">
-                {applicants.map((app) => (
+                {applicants.map((applicant) => (
                   <div
-                    key={app._id}
+                    key={applicant._id}
                     className="border rounded-xl p-4 flex justify-between items-center"
                   >
                     <div>
-                      <Link
-                        href={`/profile/${app._id}`}
-                        target="_blank"
-                        className="text-[#7747ff] font-semibold hover:underline"
-                      >
-                        {app.username}
-                      </Link>
+                      <p className="text-[#7747ff] font-semibold">
+                        {applicant.username}
+                      </p>
 
                       <div className="flex gap-2 mt-1 flex-wrap">
-                        {app.techStack?.map((tech) => (
+                        {applicant.techStack?.map((tech) => (
                           <span
                             key={tech}
                             className="text-xs bg-[#f3f0ff] text-[#7747ff] px-2 py-1 rounded-md"
@@ -159,9 +197,7 @@ const Page = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth message">
-            
-        </div>
+        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth message"></div>
 
         {/* Input */}
         <div className="p-4 pt-2">
@@ -182,3 +218,4 @@ const Page = () => {
 };
 
 export default Page;
+
