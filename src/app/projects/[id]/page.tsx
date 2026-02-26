@@ -32,7 +32,7 @@ type Project = {
 };
 
 const Page = () => {
-    const {data:session} = useSession();
+  const { data: session } = useSession();
   const params = useParams<{ id?: string | string[] }>();
   const id = useMemo(() => {
     const raw = params?.id;
@@ -83,28 +83,42 @@ const Page = () => {
 
   const isOwner = session?.user?.role === "projectOwner";
 
-  const acceptUser = async (applicantId:string)=>{
-    const response = await axios.post("/api/accept-user",{
-        projectId:project.id,
-        applicantId:applicantId
-    });
-    if(!response.data.success){
+  const acceptUser = async (applicantId: string) => {
+    try {
+      const response = await axios.post("/api/accept-user", {
+        projectId: project.id,
+        applicantId,
+      });
+
+      if (!response.data.success) {
         toast.error(response.data.message);
         return;
+      }
+      setApplicants((prev) => prev.filter((user) => user._id !== applicantId));
+
+      toast.success("User Accepted");
+    } catch (error) {
+      toast.error("Something went wrong");
     }
-    toast.success("User Accepted ");
-  }
-  const rejectUser = async(applicantId:string)=>{
-    const response = await axios.post("/api/reject-user",{
-        projectId:project.id,
-        applicantId:applicantId
-    });
-    if(!response.data.success){
+  };
+  const rejectUser = async (applicantId: string) => {
+    try {
+      const response = await axios.post("/api/reject-user", {
+        projectId: project.id,
+        applicantId,
+      });
+
+      if (!response.data.success) {
         toast.error(response.data.message);
         return;
+      }
+      setApplicants((prev) => prev.filter((user) => user._id !== applicantId));
+
+      toast.success("User Rejected");
+    } catch (error) {
+      toast.error("Something went wrong");
     }
-    toast.success("User Rejected ");
-  }
+  };
   return (
     <div className="bg-[#f7f5ff] flex min-h-screen">
       {/* LEFT CONTENT */}
@@ -118,13 +132,9 @@ const Page = () => {
 
         {/* Project Info Card */}
         <div className="bg-white rounded-2xl shadow p-6 space-y-4">
-          <h2 className="text-2xl font-bold text-[#1e0e4b]">
-            {project.title}
-          </h2>
+          <h2 className="text-2xl font-bold text-[#1e0e4b]">{project.title}</h2>
 
-          <p className="text-zinc-600">
-           {project.description}
-          </p>
+          <p className="text-zinc-600">{project.description}</p>
 
           <div className="flex flex-wrap gap-2">
             {project.techStack.map((tech) => (
@@ -145,7 +155,8 @@ const Page = () => {
           </p>
 
           <p className="text-sm text-zinc-500">
-            Status: <span className="font-semibold">{project.status || "N/A"}</span>
+            Status:{" "}
+            <span className="font-semibold">{project.status || "N/A"}</span>
           </p>
 
           {/* Owner Controls */}
@@ -188,7 +199,7 @@ const Page = () => {
 
                       <div className="flex gap-2 mt-1 flex-wrap">
                         {applicant.techStack?.map((tech) => (
-                              <span
+                          <span
                             key={tech}
                             className="text-xs bg-[#f3f0ff] text-[#7747ff] px-2 py-1 rounded-md"
                           >
@@ -199,10 +210,16 @@ const Page = () => {
                     </div>
 
                     <div className="flex gap-2">
-                      <button onClick={()=>acceptUser(applicant._id)} className="px-3 py-1 text-sm bg-green-100 text-green-600 rounded-md hover:bg-green-200">
+                      <button
+                        onClick={() => acceptUser(applicant._id)}
+                        className="px-3 py-1 text-sm bg-green-100 text-green-600 rounded-md hover:bg-green-200"
+                      >
                         Accept
                       </button>
-                      <button onClick={()=>rejectUser(applicant._id)} className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200">
+                      <button
+                        onClick={() => rejectUser(applicant._id)}
+                        className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200"
+                      >
                         Reject
                       </button>
                     </div>
@@ -243,4 +260,3 @@ const Page = () => {
 };
 
 export default Page;
-
