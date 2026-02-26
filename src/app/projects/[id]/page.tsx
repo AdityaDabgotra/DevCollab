@@ -3,6 +3,8 @@
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 type Applicant = {
   _id: string;
@@ -30,6 +32,7 @@ type Project = {
 };
 
 const Page = () => {
+    const {data:session} = useSession();
   const params = useParams<{ id?: string | string[] }>();
   const id = useMemo(() => {
     const raw = params?.id;
@@ -78,8 +81,30 @@ const Page = () => {
     fetchProject();
   }, [id]);
 
-  const isOwner = true;
+  const isOwner = session?.user?.role === "projectOwner";
 
+  const acceptUser = async (applicantId:string)=>{
+    const response = await axios.post("/api/accept-user",{
+        projectId:project.id,
+        applicantId:applicantId
+    });
+    if(!response.data.success){
+        toast.error(response.data.message);
+        return;
+    }
+    toast.success("User Accepted ");
+  }
+  const rejectUser = async(applicantId:string)=>{
+    const response = await axios.post("/api/reject-user",{
+        projectId:project.id,
+        applicantId:applicantId
+    });
+    if(!response.data.success){
+        toast.error(response.data.message);
+        return;
+    }
+    toast.success("User Rejected ");
+  }
   return (
     <div className="bg-[#f7f5ff] flex min-h-screen">
       {/* LEFT CONTENT */}
@@ -174,10 +199,10 @@ const Page = () => {
                     </div>
 
                     <div className="flex gap-2">
-                      <button className="px-3 py-1 text-sm bg-green-100 text-green-600 rounded-md hover:bg-green-200">
+                      <button onClick={()=>acceptUser(applicant._id)} className="px-3 py-1 text-sm bg-green-100 text-green-600 rounded-md hover:bg-green-200">
                         Accept
                       </button>
-                      <button className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200">
+                      <button onClick={()=>rejectUser(applicant._id)} className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200">
                         Reject
                       </button>
                     </div>

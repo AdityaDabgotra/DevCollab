@@ -7,8 +7,8 @@ export interface IUser extends Document {
   role: "user" | "projectOwner";
   bio?: string;
   techStack?: string[];
-  projectsJoined?: mongoose.Types.ObjectId[];
-  projectsApplied?: mongoose.Types.ObjectId[];
+  projectsJoined: mongoose.Types.ObjectId[];
+  projectsApplied: mongoose.Types.ObjectId[];
   projectsOwned?: mongoose.Types.ObjectId[];
 }
 
