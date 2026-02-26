@@ -2,11 +2,19 @@ import dbConnect from "@/lib/db";
 import ProjectModel from "@/models/Project";
 import UserModel from "@/models/User";
 import mongoose from "mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(request: Request) {
   try {
     const { projectId, applicantId } = await request.json();
-
+    const session = await getServerSession(authOptions);
+    if (!session?.user?._id) {
+      return Response.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
     await dbConnect();
 
     const user = await UserModel.findById(applicantId);
@@ -22,6 +30,12 @@ export async function POST(request: Request) {
       return Response.json(
         { success: false, message: "Project not found" },
         { status: 404 }
+      );
+    }
+    if (project.owner.toString() !== session.user._id) {
+      return Response.json(
+        { success: false, message: "Forbidden" },
+        { status: 403 }
       );
     }
 
