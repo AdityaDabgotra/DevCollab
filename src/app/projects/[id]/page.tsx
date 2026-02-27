@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 type Applicant = {
   _id: string;
@@ -193,9 +194,9 @@ const Page = () => {
                     className="border rounded-xl p-4 flex justify-between items-center"
                   >
                     <div>
-                      <p className="text-[#7747ff] font-semibold">
+                      <Link href={`/user/${applicant.username}`} target="_blank" className="text-[#7747ff] font-semibold">
                         {applicant.username}
-                      </p>
+                      </Link>
 
                       <div className="flex gap-2 mt-1 flex-wrap">
                         {applicant.techStack?.map((tech) => (
