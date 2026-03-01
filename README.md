@@ -1,36 +1,192 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 DevCollab
 
-## Getting Started
+> **A modern developer collaboration platform** built with cutting‑edge web technologies to help teams create, manage, and showcase projects seamlessly.
 
-First, run the development server:
+---
+
+## 🌟 Overview
+
+**DevCollab** is a full‑stack collaborative platform where developers can:
+
+✨ Create and manage projects
+🤝 Collaborate with other developers
+📂 Showcase their work
+🔍 Explore profiles and contributions
+
+Built with scalability, performance, and clean UI in mind.
+
+---
+
+## 🧠 Key Features
+
+### 👤 Developer Profiles
+
+* Dynamic profile pages using **Next.js App Router**
+* Username‑based routing (`/profile/[username]`)
+* Display user projects and contributions
+
+### 📁 Project Management
+
+* Create, update, and delete projects
+* Add tech stack tags 🏷️
+* Track project status (Active / Completed / Planned)
+
+### 🤝 Collaboration System
+
+* Invite collaborators to projects
+* Role‑based participation
+* Shared project workspace
+
+### 🔎 Discovery
+
+* Explore developers and their work
+* Search by username or tech stack
+
+### ⚡ Performance Optimizations
+
+* Server components + client components hybrid
+* Optimized routing with `useParams`
+* Memoized data handling using `useMemo`
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology                      |
+| -------- | ------------------------------- |
+| Frontend | **Next.js 14+ (App Router)** ⚛️ |
+| Styling  | **Tailwind CSS** 🎨             |
+| Backend  | **Node.js + Express** 🌐        |
+| Database | **MongoDB + Mongoose** 🍃       |
+| Auth     | **JWT Authentication** 🔐       |
+| State    | React Hooks 🪝                  |
+
+---
+
+## 📂 Project Structure
+
+```
+DevCollab/
+│
+├── app/                 # Next.js app router pages
+│   ├── profile/[username]/
+│   └── projects/
+│
+├── components/          # Reusable UI components
+├── models/              # Mongoose models
+├── lib/                 # DB connection & utilities
+├── api/                 # Route handlers
+└── public/              # Static assets
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/AdityaDabgotra/DevCollab.git
+cd DevCollab
+```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Setup environment variables
+
+Create a `.env.local` file and add:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+```
+
+### 4️⃣ Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit 👉 `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧪 Scripts
 
-## Learn More
+```bash
+npm run dev      # Start development server
+npm run build    # Production build
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧩 Core Concepts Implemented
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Dynamic routing with **App Router**
+* MongoDB schema modeling with **Mongoose**
+* API route handlers in Next.js
+* Client vs Server component separation
+* Memoization for performance
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📸 Screens (Planned)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* 🏠 Dashboard
+* 👤 Profile Page
+* 📁 Project Detail Page
+* ➕ Create Project Modal
+
+---
+
+## 🚧 Roadmap
+
+* [ ] Real‑time collaboration (WebSockets)
+* [ ] Notifications system 🔔
+* [ ] GitHub integration 🐙
+* [ ] Project comments 💬
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo 🍴
+2. Create a new branch 🌿
+3. Commit your changes 💾
+4. Open a Pull Request 🚀
+
+---
+
+## 🧑‍💻 Author
+
+**Aditya Dabgotra**
+💼 Full‑stack Developer
+🌍 Building developer tools & collaborative platforms
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## ⭐ Support
+
+If you like this project:
+
+⭐ Star the repo
+🐛 Report issues
+💡 Suggest features
+
+---
+
+> Built with ❤️ using Next.js, MongoDB, and Tailwind
