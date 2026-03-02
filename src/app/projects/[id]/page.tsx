@@ -158,7 +158,23 @@ const Page = () => {
     setNewMessage("");
 
     try {
-      await axios.post("/api/send-message", tempMessage);
+      const response = await axios.post("/api/send-message", tempMessage);
+      if(!response.data.success){
+        toast.error("Failed to send message");
+        // revert optimistic update
+        setMessages((prev) =>
+          prev.filter(
+            (msg) =>
+              !(
+                msg.projectId === tempMessage.projectId &&
+                msg.sender === tempMessage.sender &&
+                msg.content === tempMessage.content &&
+                msg.timestamp.getTime() === tempMessage.timestamp.getTime()
+              )
+          )
+        );
+      }
+
     } catch (error) {
       toast.error("Failed to send message");
     }
