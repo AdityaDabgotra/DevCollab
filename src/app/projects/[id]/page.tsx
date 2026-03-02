@@ -31,6 +31,13 @@ type Project = {
   status: string;
   owner: ProjectOwner | null;
 };
+type Message = {
+  projectId: string;
+  sender: string;
+  sender_name: string;
+  content: string;
+  timestamp: Date;
+};
 
 const Page = () => {
   const { data: session } = useSession();
@@ -42,6 +49,8 @@ const Page = () => {
   }, [params]);
 
   const [showApplicants, setShowApplicants] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState("");
 
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [project, setProject] = useState<Project>({
@@ -78,8 +87,21 @@ const Page = () => {
         console.error("Failed to fetch project", error);
       }
     };
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.post("/api/get-messages", {
+          projectId: project.id,
+        });
 
+        if (res.data.success) {
+          setMessages(res.data.messages);
+        }
+      } catch (error) {
+        console.error("Failed to fetch messages", error);
+      }
+    };
     fetchProject();
+    fetchMessages();
   }, [id]);
 
   const isOwner = session?.user?.role === "projectOwner";
@@ -118,6 +140,27 @@ const Page = () => {
       toast.success("User Rejected");
     } catch (error) {
       toast.error("Something went wrong");
+    }
+  };
+  const sendMessage = async () => {
+    if (!newMessage.trim()) return;
+
+    const tempMessage: Message = {
+      projectId: project.id,
+      sender: session?.user?._id as string,
+      sender_name: session?.user?.username as string,
+      content: newMessage,
+      timestamp: new Date(),
+    };
+
+    // optimistic UI update
+    setMessages((prev) => [...prev, tempMessage]);
+    setNewMessage("");
+
+    try {
+      await axios.post("/api/send-message", tempMessage);
+    } catch (error) {
+      toast.error("Failed to send message");
     }
   };
   return (
@@ -194,7 +237,11 @@ const Page = () => {
                     className="border rounded-xl p-4 flex justify-between items-center"
                   >
                     <div>
-                      <Link href={`/user/${applicant.username}`} target="_blank" className="text-[#7747ff] font-semibold">
+                      <Link
+                        href={`/user/${applicant.username}`}
+                        target="_blank"
+                        className="text-[#7747ff] font-semibold"
+                      >
                         {applicant.username}
                       </Link>
 
@@ -240,17 +287,57 @@ const Page = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth message"></div>
+        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth">
+          {messages.map((message, index) => {
+            const isMe = message.sender === session?.user?._id;
+
+            return (
+              <div
+                key={index}
+                className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[75%] px-3 py-2 rounded-xl text-sm shadow ${
+                    isMe
+                      ? "bg-[#7747ff] text-white rounded-br-none"
+                      : "bg-zinc-100 text-zinc-800 rounded-bl-none"
+                  }`}
+                >
+                  {!isMe && (
+                    <p className="text-xs font-semibold mb-1 text-[#7747ff]">
+                      {message.sender_name}
+                    </p>
+                  )}
+                  <p>{message.content}</p>
+                  <p className="text-[10px] opacity-70 mt-1 text-right">
+                    {new Date(message.timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
         {/* Input */}
         <div className="p-4 pt-2">
           <div className="flex gap-2">
             <input
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") sendMessage();
+              }}
               type="text"
               placeholder="Type a message..."
               className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
             />
-            <button className="bg-[#7747ff] text-white px-4 rounded-lg hover:bg-[#5f37d6]">
+            <button
+              onClick={sendMessage}
+              className="bg-[#7747ff] text-white px-4 rounded-lg hover:bg-[#5f37d6]"
+            >
               Send
             </button>
           </div>
