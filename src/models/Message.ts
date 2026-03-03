@@ -3,6 +3,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IMessage extends Document {
   projectId: mongoose.Types.ObjectId;
   sender: mongoose.Types.ObjectId;
+  senderName: string;
   content: string;
   timestamp: Date;
 }
@@ -18,6 +19,11 @@ const MessageSchema = new Schema<IMessage>(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Sender is required"],
+    },
+    senderName: {
+      type: String,
+      required: [true, "Sender Name is required"],
+      trim: true,
     },
     content: {
       type: String,
