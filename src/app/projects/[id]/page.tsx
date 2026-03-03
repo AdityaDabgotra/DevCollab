@@ -89,12 +89,16 @@ const Page = () => {
     };
     const fetchMessages = async () => {
       try {
+        
         const res = await axios.post("/api/get-messages", {
-          projectId: project.id,
+          projectId: id,
         });
-
+        
         if (res.data.success) {
-          setMessages(res.data.messages);
+          setMessages(res.data.data);
+        }
+        else{
+          setMessages([]);
         }
       } catch (error) {
         console.error("Failed to fetch messages", error);
