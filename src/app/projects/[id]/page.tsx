@@ -180,6 +180,34 @@ const Page = () => {
       toast.error("Failed to send message");
     }
   };
+  const toggleProjectStatus = async () => {
+    const newStatus = project.status === "open" ? "closed" : "open";
+
+    setProject((prev) => ({
+      ...prev,
+      status: newStatus,
+    }));
+
+    try {
+      const res = await axios.post("/api/change-project-status", {
+        projectId: project.id,
+        status: newStatus,
+      });
+
+      if (!res.data.success) {
+        throw new Error();
+      }
+
+      toast.success(`Project ${newStatus}`);
+    } catch (error) {
+      toast.error("Failed to update status");
+
+      setProject((prev) => ({
+        ...prev,
+        status: project.status,
+      }));
+    }
+  };
   return (
     <div className="bg-[#f7f5ff] flex min-h-screen">
       {/* LEFT CONTENT */}
@@ -223,8 +251,14 @@ const Page = () => {
           {/* Owner Controls */}
           {isOwner && (
             <div className="flex flex-col justify-between">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultValue={"open"} />
+              <label
+                className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={project.status === "open"}
+                  onChange={toggleProjectStatus}
+                />
                 <div className="group peer bg-white rounded-full duration-300 w-16 h-8 ring-2 ring-red-500 after:duration-300 after:bg-red-500 peer-checked:after:bg-green-500 peer-checked:ring-green-500 after:rounded-full after:absolute after:h-6 after:w-6 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-checked:after:translate-x-8 peer-hover:after:scale-95" />
               </label>
 
