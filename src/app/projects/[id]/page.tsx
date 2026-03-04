@@ -89,15 +89,13 @@ const Page = () => {
     };
     const fetchMessages = async () => {
       try {
-        
         const res = await axios.post("/api/get-messages", {
           projectId: id,
         });
-        
+
         if (res.data.success) {
           setMessages(res.data.data);
-        }
-        else{
+        } else {
           setMessages([]);
         }
       } catch (error) {
@@ -163,7 +161,7 @@ const Page = () => {
 
     try {
       const response = await axios.post("/api/send-message", tempMessage);
-      if(!response.data.success){
+      if (!response.data.success) {
         toast.error("Failed to send message");
         // revert optimistic update
         setMessages((prev) =>
@@ -178,7 +176,6 @@ const Page = () => {
           )
         );
       }
-
     } catch (error) {
       toast.error("Failed to send message");
     }
@@ -225,12 +222,19 @@ const Page = () => {
 
           {/* Owner Controls */}
           {isOwner && (
-            <button
-              onClick={() => setShowApplicants(true)}
-              className="mt-4 px-4 py-2 bg-[#7747ff] text-white rounded-lg hover:bg-[#5f37d6] transition"
-            >
-              View Applicants
-            </button>
+            <div className="flex flex-col justify-between">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" defaultValue={"open"} />
+                <div className="group peer bg-white rounded-full duration-300 w-16 h-8 ring-2 ring-red-500 after:duration-300 after:bg-red-500 peer-checked:after:bg-green-500 peer-checked:ring-green-500 after:rounded-full after:absolute after:h-6 after:w-6 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-checked:after:translate-x-8 peer-hover:after:scale-95" />
+              </label>
+
+              <button
+                onClick={() => setShowApplicants(true)}
+                className="mt-4 px-4 py-2 bg-[#7747ff] text-white rounded-lg hover:bg-[#5f37d6] transition"
+              >
+                View Applicants
+              </button>
+            </div>
           )}
         </div>
 
