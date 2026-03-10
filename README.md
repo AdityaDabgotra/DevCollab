@@ -1,65 +1,102 @@
-# 🚀 DevCollab
+<div align="center">
 
-> **A modern developer collaboration platform** built with cutting‑edge web technologies to help teams create, manage, and showcase projects seamlessly.
+```
+██████╗ ███████╗██╗   ██╗ ██████╗ ██████╗ ██╗      ██╗      █████╗ ██████╗ 
+██╔══██╗██╔════╝██║   ██║██╔════╝██╔═══██╗██║      ██║     ██╔══██╗██╔══██╗
+██║  ██║█████╗  ██║   ██║██║     ██║   ██║██║      ██║     ███████║██████╔╝
+██║  ██║██╔══╝  ╚██╗ ██╔╝██║     ██║   ██║██║      ██║     ██╔══██║██╔══██╗
+██████╔╝███████╗ ╚████╔╝ ╚██████╗╚██████╔╝███████╗ ███████╗██║  ██║██████╔╝
+╚═════╝ ╚══════╝  ╚═══╝   ╚═════╝ ╚═════╝ ╚══════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ 
+```
+
+### 🌐 A full-stack developer collaboration platform — built with Next.js 14, TypeScript & MongoDB
+
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+<br/>
+
+> *"Where developers meet, build, and grow — together."*
+
+**[🚀 View Repository](https://github.com/AdityaDabgotra/DevCollab)** &nbsp;·&nbsp; **[🐛 Report a Bug](https://github.com/AdityaDabgotra/DevCollab/issues)** &nbsp;·&nbsp; **[💡 Request a Feature](https://github.com/AdityaDabgotra/DevCollab/issues)**
+
+</div>
 
 ---
 
-## 🌟 Overview
+## 📖 Table of Contents
 
-**DevCollab** is a full‑stack collaborative platform where developers can:
-
-✨ Create and manage projects
-🤝 Collaborate with other developers
-📂 Showcase their work
-🔍 Explore profiles and contributions
-
-Built with scalability, performance, and clean UI in mind.
+- [✨ Overview](#-overview)
+- [🧠 Features](#-features)
+- [🏗️ Tech Stack](#️-tech-stack)
+- [📂 Project Structure](#-project-structure)
+- [⚙️ Getting Started](#️-getting-started)
+- [🔐 Environment Variables](#-environment-variables)
+- [🧪 Available Scripts](#-available-scripts)
+- [🗺️ Roadmap](#️-roadmap)
+- [🤝 Contributing](#-contributing)
+- [🧑‍💻 Author](#-author)
+- [📄 License](#-license)
 
 ---
 
-## 🧠 Key Features
+## ✨ Overview
+
+**DevCollab** is a full-stack platform designed for developers who want to create, manage, and showcase their projects — and connect with others doing the same.
+
+Whether you're looking for collaborators, sharing side projects, or exploring what other developers are building, DevCollab gives you a clean, fast, and focused space to do it.
+
+```
+Create a project  →  Invite collaborators  →  Track progress  →  Showcase your work
+```
+
+---
+
+## 🧠 Features
 
 ### 👤 Developer Profiles
-
-* Dynamic profile pages using **Next.js App Router**
-* Username‑based routing (`/profile/[username]`)
-* Display user projects and contributions
+- Dedicated profile pages at `/profile/[username]`
+- Display all your projects and contributions in one place
+- Dynamic routing powered by the Next.js App Router
 
 ### 📁 Project Management
-
-* Create, update, and delete projects
-* Add tech stack tags 🏷️
-* Track project status (Active / Completed / Planned)
+- Create, edit, and delete projects
+- Tag your projects with tech stack labels
+- Set project status: **Active**, **Completed**, or **Planned**
 
 ### 🤝 Collaboration System
+- Invite other developers to collaborate on your projects
+- Role-based participation per project
+- Shared project workspace for team coordination
 
-* Invite collaborators to projects
-* Role‑based participation
-* Shared project workspace
+### 🔍 Discovery
+- Browse developers and explore their work
+- Search by username or tech stack
+- Find projects that match your interests and skills
 
-### 🔎 Discovery
-
-* Explore developers and their work
-* Search by username or tech stack
-
-### ⚡ Performance Optimizations
-
-* Server components + client components hybrid
-* Optimized routing with `useParams`
-* Memoized data handling using `useMemo`
+### ⚡ Performance
+- Hybrid server + client component architecture
+- Optimised routing with `useParams`
+- Memoised data handling with `useMemo`
+- TypeScript throughout for type safety and better developer experience
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Tech Stack
 
-| Category | Technology                      |
-| -------- | ------------------------------- |
-| Frontend | **Next.js 14+ (App Router)** ⚛️ |
-| Styling  | **Tailwind CSS** 🎨             |
-| Backend  | **Node.js + Express** 🌐        |
-| Database | **MongoDB + Mongoose** 🍃       |
-| Auth     | **JWT Authentication** 🔐       |
-| State    | React Hooks 🪝                  |
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Framework** | Next.js 14+ (App Router) | Full-stack React framework |
+| **Language** | TypeScript | Type-safe development |
+| **Styling** | Tailwind CSS | Utility-first CSS |
+| **Backend** | Next.js API Routes | Server-side route handlers |
+| **Database** | MongoDB + Mongoose | Document-based data storage |
+| **Auth** | JWT Authentication | Secure session management |
+| **State** | React Hooks | Client-side state management |
+| **Linting** | ESLint | Code quality enforcement |
 
 ---
 
@@ -68,125 +105,199 @@ Built with scalability, performance, and clean UI in mind.
 ```
 DevCollab/
 │
-├── app/                 # Next.js app router pages
-│   ├── profile/[username]/
-│   └── projects/
+├── src/                          # All application source code
+│   ├── app/                      # Next.js App Router
+│   │   ├── layout.tsx            # Root layout
+│   │   ├── page.tsx              # Home / landing page
+│   │   ├── profile/
+│   │   │   └── [username]/       # Dynamic user profile pages
+│   │   │       └── page.tsx
+│   │   ├── projects/             # Project listing & detail pages
+│   │   └── api/                  # API route handlers
+│   │       ├── auth/             # Login / register endpoints
+│   │       └── projects/         # Project CRUD endpoints
+│   │
+│   ├── components/               # Reusable UI components
+│   │   ├── Navbar.tsx
+│   │   ├── ProjectCard.tsx
+│   │   └── ProfileHeader.tsx
+│   │
+│   ├── models/                   # Mongoose schemas & models
+│   │   ├── User.ts
+│   │   └── Project.ts
+│   │
+│   └── lib/                      # Utilities & DB connection
+│       ├── db.ts                 # MongoDB connection helper
+│       └── auth.ts               # JWT helpers
 │
-├── components/          # Reusable UI components
-├── models/              # Mongoose models
-├── lib/                 # DB connection & utilities
-├── api/                 # Route handlers
-└── public/              # Static assets
+├── public/                       # Static assets (images, icons)
+├── .gitignore
+├── eslint.config.mjs
+├── next.config.ts
+├── postcss.config.mjs
+├── tsconfig.json
+├── package.json
+└── README.md
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Getting Started
 
-### 1️⃣ Clone the repository
+### Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js** `v18+`
+- **npm** or **yarn**
+- A **MongoDB** database — local or via [MongoDB Atlas](https://www.mongodb.com/atlas) (free tier works great)
+
+### 1 — Clone the repository
 
 ```bash
 git clone https://github.com/AdityaDabgotra/DevCollab.git
 cd DevCollab
 ```
 
-### 2️⃣ Install dependencies
+### 2 — Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Setup environment variables
+### 3 — Set up environment variables
 
-Create a `.env.local` file and add:
-
-```env
-MONGODB_URI=your_mongodb_connection_string
-NEXTAUTH_SECRET=your_nextauth_secret
+```bash
+touch .env.local
 ```
 
-### 4️⃣ Run the development server
+Add your values inside — see [Environment Variables](#-environment-variables) below.
+
+### 4 — Run the development server
 
 ```bash
 npm run dev
 ```
 
-Visit 👉 `http://localhost:3000`
+Open your browser and visit:
 
----
-
-## 🧪 Scripts
-
-```bash
-npm run dev      # Start development server
-npm run build    # Production build
-npm run start    # Start production server
-npm run lint     # Run ESLint
+```
+http://localhost:3000
 ```
 
 ---
 
-## 🧩 Core Concepts Implemented
+## 🔐 Environment Variables
 
-* Dynamic routing with **App Router**
-* MongoDB schema modeling with **Mongoose**
-* API route handlers in Next.js
-* Client vs Server component separation
-* Memoization for performance
+Create a `.env.local` file in the project root and populate it with the following:
+
+```env
+# ─── Database ───────────────────────────────────────────────────────────────
+# MongoDB connection string (Atlas or local)
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/devcollab
+
+# ─── Authentication ──────────────────────────────────────────────────────────
+# Secret key for signing JWT tokens — use a long random string
+JWT_SECRET=your_super_secret_key_here
+
+# ─── App ─────────────────────────────────────────────────────────────────────
+# Base URL of your running app
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+> ⚠️ **Never commit `.env.local` to version control.** It is already covered by `.gitignore`.
 
 ---
 
-## 📸 Screens (Planned)
+## 🧪 Available Scripts
 
-* 🏠 Dashboard
-* 👤 Profile Page
-* 📁 Project Detail Page
-* ➕ Create Project Modal
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the development server at `localhost:3000` with hot reload |
+| `npm run build` | Create an optimised production build |
+| `npm run start` | Start the production server (requires a prior `build`) |
+| `npm run lint` | Run ESLint across the codebase |
 
 ---
 
-## 🚧 Roadmap
+## 🗺️ Roadmap
 
-* [ ] Real‑time collaboration (WebSockets)
-* [ ] Notifications system 🔔
-* [ ] GitHub integration 🐙
-* [ ] Project comments 💬
+Tracking what's done and what's coming next:
+
+- [x] Developer profiles with dynamic username routing
+- [x] Project creation, editing, and deletion
+- [x] Tech stack tagging and status tracking
+- [x] JWT-based authentication
+- [x] Collaborator invitations and role-based access
+- [x] Discovery — search developers and projects
+- [ ] Real-time notifications 🔔
+- [ ] WebSocket-powered live collaboration 🔄
+- [ ] GitHub OAuth sign-in 🐙
+- [ ] Project comments and discussion threads 💬
+- [ ] Activity feed and contribution history 📊
+- [ ] Public API for third-party integrations 🔌
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
+Contributions are welcome! Here's the workflow:
 
-1. Fork the repo 🍴
-2. Create a new branch 🌿
-3. Commit your changes 💾
-4. Open a Pull Request 🚀
+```bash
+# 1. Fork the repo on GitHub, then clone your fork
+git clone https://github.com/YOUR_USERNAME/DevCollab.git
+cd DevCollab
+
+# 2. Create a feature branch
+git checkout -b feature/your-feature-name
+
+# 3. Make your changes and commit
+git add .
+git commit -m "feat: describe what you added"
+
+# 4. Push to your fork and open a Pull Request
+git push origin feature/your-feature-name
+```
+
+### Commit message convention
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/):
+
+| Prefix | When to use |
+|---|---|
+| `feat:` | Adding a new feature |
+| `fix:` | Fixing a bug |
+| `docs:` | Documentation only changes |
+| `style:` | Formatting, whitespace, missing semicolons |
+| `refactor:` | Code change that neither fixes a bug nor adds a feature |
+| `chore:` | Build process or dependency updates |
 
 ---
 
 ## 🧑‍💻 Author
 
+<div align="center">
+
 **Aditya Dabgotra**
-💼 Full‑stack Developer
-🌍 Building developer tools & collaborative platforms
+
+Full-stack Developer · Building developer tools and collaborative platforms
+
+[![GitHub](https://img.shields.io/badge/GitHub-AdityaDabgotra-black?style=flat-square&logo=github)](https://github.com/AdityaDabgotra)
+
+</div>
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **MIT License** — you're free to use, modify, and distribute it freely.
 
 ---
 
-## ⭐ Support
+<div align="center">
 
-If you like this project:
+If DevCollab is useful to you, a ⭐ on the repo goes a long way — thank you!
 
-⭐ Star the repo
-🐛 Report issues
-💡 Suggest features
+**Built with ❤️ using Next.js · TypeScript · MongoDB · Tailwind CSS**
 
----
-
-> Built with ❤️ using Next.js, MongoDB, and Tailwind
+</div>
