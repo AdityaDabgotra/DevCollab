@@ -34,7 +34,7 @@ type Project = {
 type Message = {
   projectId: string;
   sender: string;
-  sender_name: string;
+  senderName: string;
   content: string;
   timestamp: Date;
 };
@@ -150,7 +150,7 @@ const Page = () => {
     const tempMessage: Message = {
       projectId: project.id,
       sender: session?.user?._id as string,
-      sender_name: session?.user?.username as string,
+      senderName: session?.user?.username as string,
       content: newMessage,
       timestamp: new Date(),
     };
@@ -209,7 +209,7 @@ const Page = () => {
     }
   };
   return (
-    <div className="bg-[#f7f5ff] flex min-h-screen">
+    <div className="bg-[#f7f5ff] flex max-h-screen">
       {/* LEFT CONTENT */}
       <div className="flex-1 px-8 py-10">
         {/* Header */}
@@ -251,8 +251,7 @@ const Page = () => {
           {/* Owner Controls */}
           {isOwner && (
             <div className="flex justify-between">
-              <label
-                className="relative inline-flex items-center cursor-pointer">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   className="sr-only peer"
@@ -338,7 +337,7 @@ const Page = () => {
       </div>
 
       {/* RIGHT CHAT PANEL */}
-      <div className="w-95 bg-white flex flex-col max-h-133 sticky top-0">
+      <div className="w-95 bg-white flex flex-col min-h-[89vh] sticky top-0">
         {/* Chat Header */}
         <div className="p-4">
           <h3 className="font-bold text-[#1e0e4b]">Project Chat </h3>
@@ -348,6 +347,8 @@ const Page = () => {
         <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth">
           {messages.map((message, index) => {
             const isMe = message.sender === session?.user?._id;
+            console.log(message, isMe);
+            
 
             return (
               <div
@@ -361,14 +362,15 @@ const Page = () => {
                       : "bg-zinc-100 text-zinc-800 rounded-bl-none"
                   }`}
                 >
-                  {!isMe && (
-                    <p className="text-xs font-semibold mb-1 text-[#7747ff]">
-                      {message.sender_name}
-                    </p>
-                  )}
+                  {!isMe && <p className="text-xs font-semibold mb-1 text-[#7747ff]">
+                    {message.senderName}
+                  </p>}
                   <p>{message.content}</p>
                   <p className="text-[10px] opacity-70 mt-1 text-right">
                     {new Date(message.timestamp).toLocaleTimeString([], {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
