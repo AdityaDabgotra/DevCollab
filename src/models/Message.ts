@@ -32,7 +32,7 @@ const MessageSchema = new Schema<IMessage>(
     },
     timestamp:{
       type:Date,
-      default:Date.now()
+      default: Date.now
     }
   },
   {
