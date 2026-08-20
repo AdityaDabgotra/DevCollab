@@ -36,8 +36,6 @@ export default function CreateProjectPage() {
       }
 
       toast.success("Project created successfully!");
-
-      // reset form
       setTitle("");
       setDescription("");
       setTechStack("");
@@ -45,87 +43,74 @@ export default function CreateProjectPage() {
     } catch (error) {
       toast.error("Something went wrong");
       console.log(error);
-      
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-xl bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-center text-[#7747ff] mb-6">
-          Create Project
+    <div className="flex min-h-[88vh] items-center justify-center px-4 py-10">
+      <div className="cut-frame w-full max-w-xl p-8">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">New bench</p>
+        <h1 className="display mt-2 text-4xl">
+          Open a <span className="text-ember">room</span>
         </h1>
 
-        <div className="space-y-4 text-sm">
-          {/* TITLE */}
+        <div className="mt-8 space-y-4 text-sm">
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Project Title
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Title
             </label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
-              placeholder="Enter project title"
+              className="field"
+              placeholder="What are you building?"
             />
           </div>
-
-          {/* DESCRIPTION */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
               Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
-              placeholder="Describe your project..."
+              rows={4}
+              className="field"
+              placeholder="The brief. The vibe. The ask."
             />
           </div>
-
-          {/* TECH STACK */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Tech Stack
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Tech stack
             </label>
             <input
               value={techStack}
               onChange={(e) => setTechStack(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
+              className="field"
               placeholder="React, Node.js, MongoDB"
             />
-            <p className="text-xs text-gray-400 mt-1">
-              Separate technologies with commas
-            </p>
+            <p className="mt-1 text-xs text-fog">Comma separated</p>
           </div>
-
-          {/* STATUS */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Project Status
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Status
             </label>
             <select
               value={status}
-              onChange={(e) =>
-                setStatus(e.target.value as "open" | "closed")
-              }
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
+              onChange={(e) => setStatus(e.target.value as "open" | "closed")}
+              className="field bg-ink"
             >
               <option value="open">Open</option>
               <option value="closed">Closed</option>
             </select>
           </div>
-
-          {/* SUBMIT BUTTON */}
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-[#7747ff] hover:bg-[#5f37d6] text-white rounded-lg py-2 font-medium transition disabled:opacity-50"
+            className="cut-btn w-full bg-ember py-3 font-medium text-ink disabled:opacity-50"
           >
-            {loading ? "Creating..." : "Create Project"}
+            {loading ? "Hanging the sign..." : "Create project"}
           </button>
         </div>
       </div>

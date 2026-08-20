@@ -80,39 +80,37 @@ const Form = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full flex flex-col p-4 rounded-md text-black bg-white">
-        <div className="text-2xl font-bold mb-2 text-[#1e0e4b] text-center">
-          Welcome to <span className="text-[#7747ff]">DevCollab</span>
-        </div>
+    <div className="flex min-h-[88vh] items-center justify-center px-4 py-10">
+      <div className="cut-frame w-full max-w-md p-8">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">New badge</p>
+        <h1 className="display mt-2 text-4xl">
+          Take a <span className="text-ember">seat</span>
+        </h1>
+        <p className="mt-2 text-sm text-fog">
+          Create an account and start collaborating.
+        </p>
 
-        <div className="text-sm mb-4 text-center text-[#1e0e4b]">
-          Create an account and start collaborating!
-        </div>
-
-        <form onSubmit={onSubmit} className="flex flex-col gap-3">
-          {/* Username */}
+        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
           <div>
-            <label className="block text-gray-600 text-sm mb-2">Username</label>
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Username
+            </label>
             <input
               type="text"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              className="field"
               value={username}
               onChange={(e) => handleUsernameChange(e.target.value)}
               required
             />
-
             {isCheckingUsername ? (
-              <p className="text-xs text-blue-500 mt-1">
-                Checking availability...
-              </p>
+              <p className="mt-1 text-xs text-signal">Checking availability...</p>
             ) : (
               usernameMessage && (
                 <p
-                  className={`text-xs mt-1 ${
+                  className={`mt-1 text-xs ${
                     usernameMessage.toLowerCase().includes("available")
-                      ? "text-green-500"
-                      : "text-red-500"
+                      ? "text-signal"
+                      : "text-ember"
                   }`}
                 >
                   {usernameMessage}
@@ -121,73 +119,70 @@ const Form = () => {
             )}
           </div>
 
-          {/* Email */}
           <div>
-            <label className="block text-gray-600 text-sm mb-2">Email</label>
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Email
+            </label>
             <input
               type="email"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              className="field"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          {/* Password */}
           <div className="relative">
-            <label className="block text-gray-600 text-sm mb-2">Password</label>
-
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Password
+            </label>
             <input
               type={showPassword ? "text" : "password"}
-              id="password"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 pr-10 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              className="field pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#7747ff] mt-3.5"
+              className="absolute right-3 bottom-3 text-fog hover:text-ember"
             >
               {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
             </button>
           </div>
 
-          {/* Role Dropdown */}
           <div>
-            <label className="block text-gray-600 text-sm mb-2">
-              Select Role
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Role
             </label>
             <select
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0 bg-white"
+              className="field bg-ink"
               value={role}
               onChange={(e) =>
                 setRole(e.target.value as "user" | "projectOwner")
               }
             >
-              <option value="user">User</option>
-              <option value="projectOwner">Project Owner</option>
+              <option value="user">Developer</option>
+              <option value="projectOwner">Project owner</option>
             </select>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
-            className="bg-[#7747ff] w-max m-auto px-6 py-2 rounded text-white text-sm disabled:opacity-50"
+            className="cut-btn mt-2 bg-signal py-3 text-sm font-semibold text-ink disabled:opacity-50"
           >
-            {loading ? "Creating..." : "Submit"}
+            {loading ? "Stamping badge..." : "Join the foundry"}
           </button>
         </form>
 
-        <div className="text-sm text-center mt-6">
-          Already have an account?{" "}
-          <Link className="text-[#7747ff]" href="/login">
+        <p className="mt-6 text-center text-sm text-fog">
+          Already inside?{" "}
+          <Link className="text-ember" href="/login">
             Log in
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );

@@ -71,20 +71,22 @@ const DashboardPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-[#7747ff]">
-        Loading dashboard...
+      <div className="flex min-h-[70vh] items-center justify-center text-signal">
+        Warming the desk...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f5ff] px-6 py-3">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1e0e4b] leading-tight">
-          Welcome back,<span className="text-[#7747ff]">{username}</span>
+    <div className="px-6 py-10">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">Your floor</p>
+        <h1 className="display mt-3 text-5xl md:text-7xl">
+          Welcome back,
+          <br />
+          <span className="text-ember">{username}</span>
         </h1>
-
-        <div className="w-88 h-1 bg-[#7747ff] rounded-full mt-4 mb-8"></div>
+        <div className="hairline mt-6 mb-10" />
 
         {/* USER ROLE */}
         {role === "user" && (

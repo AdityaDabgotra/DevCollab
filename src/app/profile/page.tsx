@@ -60,82 +60,69 @@ const Page = () => {
   };
 
   if (status === "loading")
-    return <p className="text-center mt-10 text-gray-500">Loading...</p>;
+    return <p className="mt-10 text-center text-fog">Loading...</p>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 -mt-8.25 -mb-5">
-      <div className="w-full h-[97%] max-w-xl bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-center text-[#7747ff] mb-6">
-          DevCollab Profile
+    <div className="flex min-h-[88vh] items-center justify-center px-4 py-10">
+      <div className="cut-frame w-full max-w-xl p-8">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">Badge</p>
+        <h1 className="display mt-2 text-4xl">
+          Your <span className="text-ember">profile</span>
         </h1>
 
-        {/* USER INFO */}
-        <div className="mb-6 space-y-2 text-sm">
-          <div className="flex justify-between">
-            <p className="p-2 rounded-lg transition hover:bg-[#7747ff]/10 hover:text-[#7747ff] cursor-pointer">
-              <span className="font-semibold">Username:</span>{" "}
-              {session?.user.username}
+        <div className="mt-6 flex items-start justify-between gap-4 text-sm">
+          <div>
+            <p className="text-fog">
+              Username{" "}
+              <span className="text-paper">{session?.user.username}</span>
             </p>
-            <Link
-              href="/change-password"
-              className="text-sm font-medium text-red-500 hover:text-red-600 
-             transition duration-200 
-             hover:bg-red-50 
-             px-3 py-1.5 rounded-lg 
-             inline-block"
-            >
-              Change Password
-            </Link>
+            <p className="mt-1 text-fog">
+              Email <span className="text-paper">{session?.user.email}</span>
+            </p>
           </div>
-          <p className="p-2 rounded-lg transition hover:bg-[#7747ff]/10 hover:text-[#7747ff] cursor-pointer">
-            <span className="font-semibold">Email:</span> {session?.user.email}
-          </p>
+          <Link href="/change-password" className="text-ember text-sm">
+            Change password
+          </Link>
         </div>
 
-        {/* FORM */}
-        <div className="space-y-4 text-sm">
-          {/* BIO */}
+        <div className="mt-8 space-y-4 text-sm">
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Bio</label>
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Bio
+            </label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              rows={2}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
-              placeholder="Tell us about yourself..."
+              rows={3}
+              className="field"
+              placeholder="Tell the room who you are..."
             />
           </div>
-
-          {/* TECH STACK */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Tech Stack
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Tech stack
             </label>
             <input
               value={techStack}
               onChange={(e) => setTechStack(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
-              placeholder="No Tech Stack Added, Add Some Skills!"
+              className="field"
+              placeholder="Add the tools you actually use"
             />
           </div>
-
-          {/* PROJECTS */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">
-              Projects Joined
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Rooms joined
             </label>
-            <p className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#7747ff]">
-              {projects === "" ? "Nothing Yet, Join Some Projects!" : projects}
+            <p className="field text-fog">
+              {projects === "" ? "Nothing yet. Apply to a bench." : projects}
             </p>
           </div>
-
-          {/* SUBMIT BUTTON */}
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-[#7747ff] hover:bg-[#6235e0] text-white rounded-lg py-2 font-medium transition disabled:opacity-50"
+            className="cut-btn w-full bg-ember py-3 font-medium text-ink disabled:opacity-50"
           >
-            {loading ? "Updating..." : "Update Profile"}
+            {loading ? "Updating..." : "Update profile"}
           </button>
         </div>
       </div>

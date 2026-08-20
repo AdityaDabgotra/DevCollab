@@ -31,7 +31,6 @@ const Form = () => {
       password,
       redirect: false,
     });
-    console.log(res);
 
     if (res?.error) {
       toast.error(
@@ -50,24 +49,22 @@ const Form = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 -mt-16.25">
-      <div className="max-w-md w-full flex flex-col p-4 rounded-md text-black bg-white shadow-md">
-        <div className="text-2xl font-bold mb-2 text-[#1e0e4b] text-center">
-          Welcome back to <span className="text-[#7747ff]">DevCollab</span>
-        </div>
+    <div className="flex min-h-[88vh] items-center justify-center px-4">
+      <div className="cut-frame w-full max-w-md p-8">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">Access</p>
+        <h1 className="display mt-2 text-4xl">
+          Back to the <span className="text-ember">desk</span>
+        </h1>
+        <p className="mt-2 text-sm text-fog">Log in and pick up where you left off.</p>
 
-        <div className="text-sm mb-4 text-center text-[#1e0e4b]">
-          Log in to your account
-        </div>
-
-        <form onSubmit={onSubmit} className="flex flex-col gap-3">
+        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
           <div>
-            <label className="block text-gray-600 text-sm mb-2">
-              Email or Username
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Email or username
             </label>
             <input
               type="text"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              className="field"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               required
@@ -75,21 +72,20 @@ const Form = () => {
           </div>
 
           <div className="relative">
-            <label className="block text-gray-600 text-sm mb-2">Password</label>
-
+            <label className="mb-2 block text-xs tracking-[0.2em] text-fog uppercase">
+              Password
+            </label>
             <input
               type={showPassword ? "text" : "password"}
-              id="password"
-              className="rounded border border-gray-200 text-sm w-full h-11 p-2.5 pr-10 focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+              className="field pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#7747ff] mt-3.5"
+              className="absolute right-3 bottom-3 text-fog hover:text-ember"
             >
               {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
             </button>
@@ -98,18 +94,18 @@ const Form = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-[#7747ff] w-max m-auto px-6 py-2 rounded text-white text-sm disabled:opacity-50"
+            className="cut-btn mt-2 bg-ember py-3 text-sm font-semibold text-ink disabled:opacity-50"
           >
-            {loading ? "Logging in..." : "Submit"}
+            {loading ? "Opening the gate..." : "Enter"}
           </button>
         </form>
 
-        <div className="text-sm text-center mt-6">
-          Don’t have an account yet?{" "}
-          <Link className="text-[#7747ff]" href="/register">
-            Sign up for free!
+        <p className="mt-6 text-center text-sm text-fog">
+          No desk yet?{" "}
+          <Link className="text-signal" href="/register">
+            Claim one
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );

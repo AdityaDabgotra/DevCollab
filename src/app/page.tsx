@@ -2,115 +2,141 @@
 
 import Link from "next/link";
 
+const ticker = [
+  "React",
+  "Next.js",
+  "MongoDB",
+  "TypeScript",
+  "Node",
+  "Python",
+  "Go",
+  "Rust",
+  "Figma",
+  "Postgres",
+];
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-100 text-[#1e0e4b]">
-      {/* HERO */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-20 bg-white shadow-sm">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Build. Collaborate. <span className="text-[#7747ff]">Ship.</span>
-        </h1>
-        <p className="text-gray-500 max-w-2xl mb-8">
-          DevCollab helps developers find teammates, work on real projects,
-          and grow together. Join projects, showcase your skills, and
-          collaborate with like-minded builders.
-        </p>
+    <div className="overflow-hidden">
+      <section className="relative mx-auto grid min-h-[78vh] max-w-6xl items-end gap-10 px-6 pb-16 pt-12 md:grid-cols-[1.2fr_0.8fr]">
+        <div>
+          <p className="mb-4 text-xs tracking-[0.35em] text-signal uppercase">
+            01 — Collaboration foundry
+          </p>
+          <h1 className="display text-[14vw] text-paper md:text-[7.4rem]">
+            FIND YOUR
+            <br />
+            <span className="text-ember">CREW.</span>
+          </h1>
+          <p className="mt-6 max-w-md text-sm leading-7 text-fog">
+            DevCollab is a workshop for builders who want teammates, not
+            job boards. Post a project, apply with your stack, and ship in
+            public with people who actually write code.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/register"
+              className="cut-btn bg-ember px-7 py-3 text-sm font-semibold text-ink"
+            >
+              Enter the foundry
+            </Link>
+            <Link
+              href="/login"
+              className="cut-btn border border-line px-7 py-3 text-sm text-paper"
+            >
+              I already have a desk
+            </Link>
+          </div>
+        </div>
 
-        <div className="flex gap-4">
+        <div className="cut-frame p-6">
+          <p className="text-xs tracking-[0.28em] text-fog uppercase">
+            Tonight’s floor
+          </p>
+          <div className="mt-6 space-y-5">
+            {[
+              ["Open benches", "Find live projects looking for a stack match."],
+              ["Owner desks", "Review applicants and keep the room closed or open."],
+              ["Signal chat", "Talk only with people who already joined the build."],
+            ].map(([title, copy], i) => (
+              <div key={title} className="border-t border-line pt-4">
+                <p className="display text-2xl text-paper">
+                  <span className="mr-2 text-ember">0{i + 1}</span>
+                  {title}
+                </p>
+                <p className="mt-1 text-sm text-fog">{copy}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="marquee">
+        <div className="marquee-track py-3 text-xs tracking-[0.35em] text-fog uppercase">
+          {[...ticker, ...ticker].map((item, i) => (
+            <span key={`${item}-${i}`}>
+              {item} <span className="text-ember">◆</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <h2 className="display text-5xl md:text-7xl">
+          Not another
+          <br />
+          <span className="text-signal">feed.</span>
+        </h2>
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          {[
+            {
+              k: "02",
+              t: "Apply with a stack",
+              d: "Owners see your tools first. No résumés, no noise.",
+            },
+            {
+              k: "03",
+              t: "Own the room",
+              d: "Accept, reject, and flip a project from open to closed in one motion.",
+            },
+            {
+              k: "04",
+              t: "Build in-channel",
+              d: "Project chat stays with the people who were actually invited in.",
+            },
+          ].map((item) => (
+            <article key={item.k} className="cut-frame p-6">
+              <p className="text-ember">{item.k}</p>
+              <h3 className="display mt-3 text-3xl">{item.t}</h3>
+              <p className="mt-3 text-sm leading-6 text-fog">{item.d}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mb-16 max-w-6xl px-6">
+        <div className="cut-frame flex flex-col items-start justify-between gap-6 p-8 md:flex-row md:items-end">
+          <div>
+            <p className="text-xs tracking-[0.3em] text-signal uppercase">
+              Last call
+            </p>
+            <h2 className="display mt-3 text-4xl md:text-6xl">
+              Ready to sit
+              <br />
+              at a real bench?
+            </h2>
+          </div>
           <Link
             href="/register"
-            className="bg-[#7747ff] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#5f37d6] transition"
+            className="cut-btn bg-signal px-8 py-3 font-semibold text-ink"
           >
-            Get Started
-          </Link>
-
-          <Link
-            href="/login"
-            className="border border-[#7747ff] text-[#7747ff] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#7747ff]/10 transition"
-          >
-            Login
+            Create your profile
           </Link>
         </div>
-      </section>
-
-      {/* FEATURES */}
-      <section className="px-6 py-16 max-w-6xl mx-auto">
-        <h2 className="text-2xl font-bold text-center mb-12">
-          Why DevCollab?
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Find Teammates",
-              desc: "Discover developers with the right tech stack and collaborate on meaningful projects.",
-            },
-            {
-              title: "Join Real Projects",
-              desc: "Work on open projects to gain experience and build a strong portfolio.",
-            },
-            {
-              title: "Showcase Skills",
-              desc: "Highlight your tech stack and contributions to stand out.",
-            },
-          ].map((feature, i) => (
-            <div
-              key={i}
-              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
-            >
-              <div className="w-10 h-10 flex items-center justify-center bg-[#7747ff]/10 text-[#7747ff] rounded-lg mb-4 font-bold">
-                {i + 1}
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className="text-sm text-gray-500 leading-6">{feature.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="bg-white py-16 px-6">
-        <h2 className="text-2xl font-bold text-center mb-12">
-          How It Works
-        </h2>
-
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 text-center">
-          {[
-            "Create your developer profile",
-            "Join or post collaboration projects",
-            "Build together and grow your portfolio",
-          ].map((step, i) => (
-            <div key={i}>
-              <div className="w-12 h-12 mx-auto flex items-center justify-center bg-[#7747ff] text-white rounded-full font-bold mb-4">
-                {i + 1}
-              </div>
-              <p className="text-sm text-gray-600">{step}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="text-center py-16 px-6">
-        <h2 className="text-2xl font-bold mb-4">
-          Ready to start collaborating?
-        </h2>
-        <p className="text-gray-500 mb-6">
-          Join DevCollab today and work on real-world projects with amazing developers.
+        <p className="mt-8 text-center text-xs tracking-[0.2em] text-fog uppercase">
+          © {new Date().getFullYear()} DevCollab — built for people who ship
         </p>
-
-        <Link
-          href="/register"
-          className="bg-[#7747ff] text-white px-8 py-3 rounded-lg text-sm font-medium hover:bg-[#5f37d6] transition"
-        >
-          Create Your Profile
-        </Link>
       </section>
-
-      {/* FOOTER */}
-      <footer className="text-center text-sm text-gray-400 pb-6">
-        © {new Date().getFullYear()} DevCollab. Built for developers.
-      </footer>
     </div>
   );
 }

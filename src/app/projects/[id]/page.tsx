@@ -216,121 +216,104 @@ const Page = () => {
     }
   };
   return (
-    <div className="bg-[#f7f5ff] flex max-h-screen">
-      {/* LEFT CONTENT */}
-      <div className="flex-1 px-8 py-10">
-        {/* Header */}
-        <h1 className="text-4xl font-extrabold text-[#1e0e4b]">
-          Project <span className="text-[#7747ff]">#{project.id}</span>
+    <div className="flex min-h-[88vh] flex-col lg:flex-row">
+      <div className="flex-1 px-6 py-10 lg:px-10">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">Room</p>
+        <h1 className="display mt-3 text-4xl md:text-6xl">
+          {project.title || "Loading"}
         </h1>
+        <p className="mt-2 text-xs text-fog">#{project.id}</p>
+        <div className="hairline my-8" />
 
-        <div className="w-40 h-1 bg-[#7747ff] rounded-full mt-4 mb-8" />
-
-        {/* Project Info Card */}
-        <div className="bg-white rounded-2xl shadow p-6 space-y-4">
-          <h2 className="text-2xl font-bold text-[#1e0e4b]">{project.title}</h2>
-
-          <p className="text-zinc-600">{project.description}</p>
-
+        <div className="cut-frame space-y-4 p-6">
+          <p className="leading-7 text-fog">{project.description}</p>
           <div className="flex flex-wrap gap-2">
             {project.techStack.map((tech) => (
-              <span
-                key={tech}
-                className="text-xs bg-[#f3f0ff] text-[#7747ff] px-2 py-1 rounded-md"
-              >
+              <span key={tech} className="chip">
                 {tech}
               </span>
             ))}
           </div>
-
-          <p className="text-sm text-zinc-500">
-            Owner:{" "}
-            <span className="text-[#7747ff] font-semibold">
+          <p className="text-sm text-fog">
+            Owner{" "}
+            <span className="text-ember">
               {project.owner?.username ?? "Unknown"}
             </span>
           </p>
-
-          <p className="text-sm text-zinc-500">
-            Status:{" "}
-            <span className="font-semibold">{project.status || "N/A"}</span>
+          <p className="text-sm text-fog">
+            Status{" "}
+            <span className={project.status === "open" ? "text-signal" : "text-ember"}>
+              {project.status || "N/A"}
+            </span>
           </p>
 
-          {/* Owner Controls */}
           {isOwner && (
-            <div className="flex justify-between">
-              <label className="relative inline-flex items-center cursor-pointer">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+              <label className="flex cursor-pointer items-center gap-3 text-sm">
                 <input
                   type="checkbox"
-                  className="sr-only peer"
+                  className="h-4 w-4 accent-signal"
                   checked={project.status === "open"}
                   onChange={toggleProjectStatus}
                 />
-                <div className=" -mt-6 group peer bg-white rounded-full duration-300 w-16 h-8 ring-2 ring-red-500 after:duration-300 after:bg-red-500 peer-checked:after:bg-green-500 peer-checked:ring-green-500 after:rounded-full after:absolute after:h-6 after:w-6 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-checked:after:translate-x-8 peer-hover:after:scale-95" />
+                {project.status === "open" ? "Open for applicants" : "Closed"}
               </label>
-
               <button
                 onClick={() => setShowApplicants(true)}
-                className="mt-4 px-4 py-2 bg-[#7747ff] text-white rounded-lg hover:bg-[#5f37d6] transition"
+                className="cut-btn bg-ember px-4 py-2 text-sm text-ink"
               >
-                View Applicants
+                View applicants
               </button>
             </div>
           )}
         </div>
 
-        {/* APPLICANTS DRAWER */}
         {showApplicants && (
-          <div className="mt-8 bg-white rounded-2xl shadow p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-[#1e0e4b]">Applicants</h3>
+          <div className="cut-frame mt-8 p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="display text-2xl">Applicants</h3>
               <button
                 onClick={() => setShowApplicants(false)}
-                className="text-sm text-zinc-500 hover:text-red-500"
+                className="text-sm text-fog hover:text-ember"
               >
                 Close
               </button>
             </div>
-
             {applicants.length === 0 ? (
-              <p className="text-zinc-500">No applicants yet.</p>
+              <p className="text-fog">No applicants yet.</p>
             ) : (
               <div className="space-y-3">
                 {applicants.map((applicant) => (
                   <div
                     key={applicant._id}
-                    className="border rounded-xl p-4 flex justify-between items-center"
+                    className="flex flex-wrap items-center justify-between gap-3 border border-line p-4"
                   >
                     <div>
                       <Link
                         href={`/user/${applicant.username}`}
                         target="_blank"
-                        className="text-[#7747ff] font-semibold"
+                        className="text-signal"
                       >
                         {applicant.username}
                       </Link>
-
-                      <div className="flex gap-2 mt-1 flex-wrap">
+                      <div className="mt-2 flex flex-wrap gap-2">
                         {applicant.techStack?.map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-xs bg-[#f3f0ff] text-[#7747ff] px-2 py-1 rounded-md"
-                          >
+                          <span key={tech} className="chip">
                             {tech}
                           </span>
                         ))}
                       </div>
                     </div>
-
                     <div className="flex gap-2">
                       <button
                         onClick={() => acceptUser(applicant._id)}
-                        className="px-3 py-1 text-sm bg-green-100 text-green-600 rounded-md hover:bg-green-200"
+                        className="cut-btn bg-signal px-3 py-1 text-sm text-ink"
                       >
                         Accept
                       </button>
                       <button
                         onClick={() => rejectUser(applicant._id)}
-                        className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200"
+                        className="cut-btn border border-ember px-3 py-1 text-sm text-ember"
                       >
                         Reject
                       </button>
@@ -343,80 +326,78 @@ const Page = () => {
         )}
       </div>
 
-      {/* RIGHT CHAT PANEL */}
-      <div className="w-95 bg-white flex flex-col min-h-[89vh] sticky top-0">
-        <div className="p-4">
-          <h3 className="font-bold text-[#1e0e4b]">Project Chat </h3>
+      <aside className="flex min-h-[70vh] w-full flex-col border-t border-line lg:w-96 lg:border-t-0 lg:border-l">
+        <div className="border-b border-line p-4">
+          <h3 className="display text-xl">Signal</h3>
         </div>
-
         {!canChat ? (
-          <div className="flex-1 px-4 text-sm text-zinc-500">
-            Chat is available after you join this project.
+          <div className="flex-1 px-4 py-6 text-sm text-fog">
+            Chat opens after you join this project.
           </div>
         ) : (
           <>
-        <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth">
-          {messages.map((message, index) => {
-            const senderId =
-              typeof message.sender === "string"
-                ? message.sender
-                : String(message.sender);
-            const isMe = senderId === session?.user?._id;
+            <div className="message flex-1 space-y-3 overflow-y-auto px-4 py-4">
+              {messages.map((message, index) => {
+                const senderId =
+                  typeof message.sender === "string"
+                    ? message.sender
+                    : String(message.sender);
+                const isMe = senderId === session?.user?._id;
 
-            return (
-              <div
-                key={index}
-                className={`flex ${isMe ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[75%] px-3 py-2 rounded-xl text-sm shadow ${
-                    isMe
-                      ? "bg-[#7747ff] text-white rounded-br-none"
-                      : "bg-zinc-100 text-zinc-800 rounded-bl-none"
-                  }`}
+                return (
+                  <div
+                    key={index}
+                    className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[80%] px-3 py-2 text-sm ${
+                        isMe
+                          ? "cut-btn bg-ember text-ink"
+                          : "border border-line text-paper"
+                      }`}
+                    >
+                      {!isMe && (
+                        <p className="mb-1 text-xs text-signal">
+                          {message.senderName}
+                        </p>
+                      )}
+                      <p>{message.content}</p>
+                      <p className="mt-1 text-right text-[10px] opacity-70">
+                        {new Date(message.timestamp).toLocaleTimeString([], {
+                          day: "2-digit",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="border-t border-line p-4">
+              <div className="flex gap-2">
+                <input
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") sendMessage();
+                  }}
+                  type="text"
+                  placeholder="Send a signal..."
+                  className="field"
+                />
+                <button
+                  onClick={sendMessage}
+                  className="cut-btn bg-signal px-4 text-ink"
                 >
-                  {!isMe && <p className="text-xs font-semibold mb-1 text-[#7747ff]">
-                    {message.senderName}
-                  </p>}
-                  <p>{message.content}</p>
-                  <p className="text-[10px] opacity-70 mt-1 text-right">
-                    {new Date(message.timestamp).toLocaleTimeString([], {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </div>
+                  Send
+                </button>
               </div>
-            );
-          })}
-        </div>
-
-        <div className="p-4 pt-2">
-          <div className="flex gap-2">
-            <input
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") sendMessage();
-              }}
-              type="text"
-              placeholder="Type a message..."
-              className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7747ff]"
-            />
-            <button
-              onClick={sendMessage}
-              className="bg-[#7747ff] text-white px-4 rounded-lg hover:bg-[#5f37d6]"
-            >
-              Send
-            </button>
-          </div>
-        </div>
+            </div>
           </>
         )}
-      </div>
+      </aside>
     </div>
   );
 };

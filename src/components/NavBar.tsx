@@ -15,101 +15,107 @@ const Navbar = () => {
     router.replace("/login");
   };
 
+  const close = () => setMenuOpen(false);
+
   return (
-    <nav className="w-full bg-white/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold">
-          <span className="text-[#1e0e4b]">Dev</span>
-          <span className="text-[#7747ff]">Collab</span>
+    <nav className="page-shell sticky top-0 z-50 px-4 pt-4">
+      <div className="nav-island mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="display text-xl" onClick={close}>
+          DEV<span className="text-ember">COLLAB</span>
         </Link>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          {
-            session ? (
-              session?.user?.role === "user"?
-            (<Link href="/see-projects" className="hover:text-[#7747ff] transition">
-              See Projects
-            </Link>) :
-            (<Link href="/create-project" className="hover:text-[#7747ff] transition">
-              Create Project
-            </Link>)
-            ) : null
-          }
+        <div className="hidden items-center gap-6 text-xs font-medium tracking-[0.18em] uppercase md:flex">
+          {session ? (
+            session?.user?.role === "user" ? (
+              <Link href="/see-projects" className="text-fog hover:text-paper">
+                Explore
+              </Link>
+            ) : (
+              <Link href="/create-project" className="text-fog hover:text-paper">
+                New project
+              </Link>
+            )
+          ) : null}
 
           {status === "loading" ? null : session ? (
             <div className="flex items-center gap-4">
               <Link
                 href="/dashboard"
-                className="px-4 py-1.5 rounded-md bg-[#7747ff] text-white hover:opacity-90"
+                className="cut-btn bg-ember px-4 py-2 text-ink hover:bg-ember-2"
               >
-                Dashboard
+                Desk
               </Link>
-
               <button
                 onClick={handleLogout}
-                className="text-sm text-gray-600 hover:text-red-500 transition"
+                className="text-fog hover:text-ember"
               >
-                Logout
+                Sign out
               </button>
-
-              {/* Avatar */}
-              <Link href="/profile" className="w-9 h-9 rounded-full bg-[#7747ff] text-white flex items-center justify-center font-semibold cursor-pointer">
+              <Link
+                href="/profile"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-ember text-ember"
+              >
                 {session.user?.username?.charAt(0).toUpperCase()}
               </Link>
             </div>
           ) : (
-            <div className="flex items-center gap-3">
-              <Link
-                href="/login"
-                className="text-sm hover:text-[#7747ff] transition"
-              >
+            <div className="flex items-center gap-4">
+              <Link href="/login" className="text-fog hover:text-paper">
                 Login
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-1.5 rounded-md bg-[#7747ff] text-white hover:opacity-90"
+                className="cut-btn bg-signal px-4 py-2 text-ink"
               >
-                Sign Up
+                Join
               </Link>
             </div>
           )}
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-[#1e0e4b]"
+          className="text-paper md:hidden"
+          aria-label="Toggle menu"
         >
-          ☰
+          {menuOpen ? "✕" : "☰"}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden border-t px-4 py-4 flex flex-col gap-3 bg-white">
-          {
-            session ? (
-              session?.user?.role === "user"? (<Link href="/see-projects">Projects</Link>):
-              (<Link href="/create-project">Create Project</Link>)
-            ):null
-          }
+        <div className="nav-island mx-auto mt-2 flex max-w-6xl flex-col gap-3 px-4 py-4 text-sm md:hidden">
+          {session ? (
+            session?.user?.role === "user" ? (
+              <Link href="/see-projects" onClick={close}>
+                Explore
+              </Link>
+            ) : (
+              <Link href="/create-project" onClick={close}>
+                New project
+              </Link>
+            )
+          ) : null}
 
           {session ? (
             <>
-              <Link href="/dashboard">Dashboard</Link>
-              <button
-                onClick={handleLogout}
-                className="text-left text-red-500"
-              >
-                Logout
+              <Link href="/dashboard" onClick={close}>
+                Desk
+              </Link>
+              <Link href="/profile" onClick={close}>
+                Profile
+              </Link>
+              <button onClick={handleLogout} className="text-left text-ember">
+                Sign out
               </button>
             </>
           ) : (
             <>
-              <Link href="/login">Login</Link>
-              <Link href="/register">Sign Up</Link>
+              <Link href="/login" onClick={close}>
+                Login
+              </Link>
+              <Link href="/register" onClick={close}>
+                Join
+              </Link>
             </>
           )}
         </div>

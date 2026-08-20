@@ -20,10 +20,10 @@ type Props = {
 const DashboardProjectSection = ({ title, projects, emptyMessage }: Props) => {
   return (
     <div className="mb-12">
-      <h2 className="text-2xl font-bold text-[#1e0e4b] mb-4">{title}</h2>
+      <h2 className="display mb-6 text-3xl text-paper">{title}</h2>
 
       {projects.length === 0 ? (
-        <p className="text-zinc-500">{emptyMessage}</p>
+        <p className="text-fog">{emptyMessage}</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {projects.map((project, index) => (

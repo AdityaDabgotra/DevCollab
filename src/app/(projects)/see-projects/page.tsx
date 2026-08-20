@@ -43,33 +43,26 @@ const SeeProjectsPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f7f5ff] px-6 py-10">
-      {/* Heading */}
-      <div className="max-w-7xl mx-auto mb-10">
-        <h1 className="text-3xl font-bold text-[#1e0e4b]">
-          Explore Projects
+    <div className="px-6 py-10">
+      <div className="mx-auto mb-10 max-w-7xl">
+        <p className="text-xs tracking-[0.3em] text-signal uppercase">Open benches</p>
+        <h1 className="display mt-3 text-5xl md:text-7xl">
+          Explore <span className="text-ember">projects</span>
         </h1>
-        <p className="text-zinc-500 mt-2">
-          Find exciting collaborations and apply to work with amazing devs.
+        <p className="mt-3 max-w-xl text-fog">
+          Find a stack match and apply. Closed rooms stay closed.
         </p>
       </div>
 
-      {/* Loading State */}
       {loading && (
-        <p className="text-center text-[#7747ff] font-medium">
-          Loading projects...
-        </p>
+        <p className="text-center font-medium text-signal">Loading projects...</p>
       )}
 
-      {/* Empty State */}
       {!loading && projects.length === 0 && (
-        <p className="text-center text-zinc-500">
-          No projects available right now.
-        </p>
+        <p className="text-center text-fog">No projects on the floor right now.</p>
       )}
 
-      {/* Projects Grid */}
-      <div className="max-w-7xl mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {projects.map((project, index) => {
           const alreadyApplied = userProjects.some(
             (userProjectId) => userProjectId === project._id.toString()
