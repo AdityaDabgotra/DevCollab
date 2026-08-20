@@ -18,6 +18,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (session.user.role !== "user") {
+      return Response.json(
+        { success: false, message: "Only developers can apply to projects" },
+        { status: 403 }
+      );
+    }
+
     const { projectId } = await request.json();
 
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -27,13 +34,27 @@ export async function POST(request: Request) {
       );
     }
 
-    const userId = session.user._id;
+    const userId = session.user._id.toString();
 
     const project = await ProjectModel.findById(projectId);
     if (!project) {
       return Response.json(
         { success: false, message: "Project not found" },
         { status: 404 }
+      );
+    }
+
+    if (project.status !== "open") {
+      return Response.json(
+        { success: false, message: "Project is closed" },
+        { status: 400 }
+      );
+    }
+
+    if (project.owner.toString() === userId) {
+      return Response.json(
+        { success: false, message: "Owners cannot apply to their own project" },
+        { status: 400 }
       );
     }
 
@@ -45,15 +66,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const userObjectId = new mongoose.Types.ObjectId(userId);
-    const projectObjectId = new mongoose.Types.ObjectId(projectId);
+    const alreadyApplied = project.applicants?.some(
+      (id) => id.toString() === userId
+    );
+    const alreadyMember = project.members?.some(
+      (id) => id.toString() === userId
+    );
 
-    if (project.applicants.includes(userObjectId)) {
+    if (alreadyApplied || alreadyMember) {
       return Response.json(
-        { success: false, message: "Already applied" },
+        { success: false, message: alreadyMember ? "Already a member" : "Already applied" },
         { status: 400 }
       );
     }
+
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    const projectObjectId = new mongoose.Types.ObjectId(projectId);
 
     project.applicants.push(userObjectId);
     user.projectsApplied = user.projectsApplied || [];
