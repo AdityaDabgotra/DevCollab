@@ -48,6 +48,11 @@ const DashboardPage = () => {
   };
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      setLoading(false);
+      return;
+    }
+
     if (status === "authenticated") {
       const load = async () => {
         if(role === "user"){
@@ -62,7 +67,7 @@ const DashboardPage = () => {
 
       load();
     }
-  }, [status]);
+  }, [status, role]);
 
   if (loading) {
     return (
