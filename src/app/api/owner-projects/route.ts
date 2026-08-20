@@ -11,10 +11,10 @@ export async function GET(request:Request) {
         if(!session){
             return Response.json(
                 {success:false,message:"Not authenticated"},
-                {status:400}
+                {status:401}
             )
         }
-        const user = await UserModel.findById({_id:session?.user?._id});
+        const user = await UserModel.findById(session.user._id);
         if(!user){
             return Response.json(
                 {success:false,message:"User Not found"},
