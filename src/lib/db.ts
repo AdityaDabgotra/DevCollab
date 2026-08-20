@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import dns from 'dns'
+import dotenv from 'dotenv'
+dotenv.config()
+
+dns.setServers([
+  '8.8.8.8',
+  '8.8.4.4'
+]);
 
 type MongooseCache = {
   conn: typeof mongoose | null;
