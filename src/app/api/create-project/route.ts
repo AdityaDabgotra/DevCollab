@@ -3,7 +3,6 @@ import ProjectModel from "@/models/Project";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import UserModel from "@/models/User";
-import mongoose from "mongoose";
 
 export async function POST(request: Request) {
   try {
@@ -18,15 +17,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const { title, description, techStack, status } = await request.json();
-
-    const project = await ProjectModel.create({
-      title,
-      description,
-      techStack,
-      status,
-      owner: session.user._id,
-    });
+    if (session.user.role !== "projectOwner") {
+      return Response.json(
+        { success: false, message: "Only project owners can create projects" },
+        { status: 403 }
+      );
+    }
 
     const user = await UserModel.findById(session.user._id);
 
@@ -36,10 +32,29 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
-    user.projectsOwned?.push(project._id);
-    console.log(user.projectsOwned);
-    
-    await user.save()
+
+    const { title, description, techStack, status } = await request.json();
+
+    if (!title || !description) {
+      return Response.json(
+        { success: false, message: "Title and description are required" },
+        { status: 400 }
+      );
+    }
+
+    const project = await ProjectModel.create({
+      title,
+      description,
+      techStack: Array.isArray(techStack)
+        ? techStack.map((t: string) => String(t).trim()).filter(Boolean)
+        : [],
+      status: status === "closed" ? "closed" : "open",
+      owner: session.user._id,
+    });
+
+    user.projectsOwned = user.projectsOwned || [];
+    user.projectsOwned.push(project._id);
+    await user.save();
 
     return Response.json(
       { success: true, message: "Project created successfully" },
