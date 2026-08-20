@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/db";
 import NotificationModel from "@/models/Notification";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function GET() {
   try {
