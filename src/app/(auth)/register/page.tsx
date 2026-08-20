@@ -70,8 +70,10 @@ const Form = () => {
         toast.error(response.data.message || "Registration failed. Please try again.");
       }
     } catch (error) {
-      console.log("Error registering:", error);
-      toast.error("An error occurred. Please try again.");
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error(
+        axiosError.response?.data.message || "An error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }
