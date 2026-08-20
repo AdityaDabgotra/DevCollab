@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     if (!session) {
       return Response.json(
         { success: false, message: "Not Authenticated" },
-        { status: 500 }
+        { status: 401 }
       );
     }
     const id = session.user._id;
