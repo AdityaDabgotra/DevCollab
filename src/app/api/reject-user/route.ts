@@ -1,8 +1,10 @@
 import dbConnect from "@/lib/db";
 import ProjectModel from "@/models/Project";
 import UserModel from "@/models/User";
+import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
+import { createNotification } from "@/lib/notify";
 
 export async function POST(request: Request) {
   try {
@@ -59,6 +61,14 @@ export async function POST(request: Request) {
 
     await user.save();
     await project.save();
+
+    await createNotification({
+      recipient: applicantId,
+      type: "application_rejected",
+      message: `Your application to "${project.title}" was not accepted`,
+      projectId: project._id as mongoose.Types.ObjectId,
+      actor: session.user._id,
+    });
 
     return Response.json(
       { success: true, message: "User rejected successfully" },
