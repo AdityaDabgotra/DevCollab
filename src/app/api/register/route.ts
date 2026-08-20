@@ -8,9 +8,6 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    // #region agent log
-    fetch("http://127.0.0.1:7243/ingest/a07eb546-430e-4283-a5ad-88fd71cceafa",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({runId:"initial",hypothesisId:"H3",location:"register/route.ts:11",message:"Register request received",data:{username:body?.username,email:body?.email,role:body?.role},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
 
     let parsedData;
     try {
@@ -28,16 +25,13 @@ export async function POST(request: Request) {
     const existingUser = await UserModel.findOne({
       $or: [{ username }, { email }],
     });
-    // #region agent log
-    fetch("http://127.0.0.1:7243/ingest/a07eb546-430e-4283-a5ad-88fd71cceafa",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({runId:"initial",hypothesisId:"H3",location:"register/route.ts:30",message:"Register existing user check",data:{exists:Boolean(existingUser)},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     if (existingUser) {
       return Response.json(
         {
           success: false,
           message: "Username or Email already exists",
         },
-        { status: 200 }
+        { status: 409 }
       );
     }
 
