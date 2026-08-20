@@ -4,7 +4,7 @@ import UserModel from "@/models/User";
 
 export async function POST(request: Request) {
     try {
-        dbConnect()
+        await dbConnect();
         const {username} = await request.json()
         const user = await UserModel.findOne({username})
         if(!user) {
