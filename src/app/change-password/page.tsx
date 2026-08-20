@@ -4,7 +4,6 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Eye, EyeOff } from "lucide-react";
-import { useSession } from "next-auth/react";
 
 const Page = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -14,9 +13,6 @@ const Page = () => {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const {data: session} = useSession();
-  const username = session?.user?.username;
 
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +31,6 @@ const Page = () => {
       setLoading(true);
       
       const response = await axios.post("/api/update-password", {
-        username,
         currentPassword,
         newPassword,
       });
