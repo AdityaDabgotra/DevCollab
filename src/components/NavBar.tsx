@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import NotificationBell from "./NotificationBell";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -39,6 +40,7 @@ const Navbar = () => {
 
           {status === "loading" ? null : session ? (
             <div className="flex items-center gap-4">
+              <NotificationBell />
               <Link
                 href="/dashboard"
                 className="cut-btn bg-ember px-4 py-2 text-ink hover:bg-ember-2"
