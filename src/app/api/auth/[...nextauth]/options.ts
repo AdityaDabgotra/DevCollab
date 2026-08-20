@@ -45,14 +45,20 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Incorrect password");
         }
 
-        return user;
+        return {
+          id: user._id.toString(),
+          _id: user._id.toString(),
+          username: user.username,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token._id = user._id;
+        token._id = user._id?.toString();
         token.username = user.username;
         token.role = user.role;
         token.email = user.email;
