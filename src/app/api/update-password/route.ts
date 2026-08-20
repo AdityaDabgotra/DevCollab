@@ -6,12 +6,9 @@ import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(request: Request) {
   try {
-    const { username, currentPassword, newPassword } = await request.json();
+    const { currentPassword, newPassword } = await request.json();
     const session = await getServerSession(authOptions);
-    // #region agent log
-    fetch("http://127.0.0.1:7243/ingest/a07eb546-430e-4283-a5ad-88fd71cceafa",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({runId:"initial",hypothesisId:"H4",location:"update-password/route.ts:11",message:"Password update request context",data:{username,sessionUsername:session?.user?.username,hasCurrentPassword:Boolean(currentPassword),hasNewPassword:Boolean(newPassword)},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
-    if(!session || session.user.username !== username) {
+    if(!session?.user?.username) {
       return Response.json(
         {
           success: false,
@@ -33,7 +30,7 @@ export async function POST(request: Request) {
     }
     await dbConnect();
 
-    const user = await UserModel.findOne({ username }).select("+password");
+    const user = await UserModel.findOne({ username: session.user.username }).select("+password");
 
     if (!user) {
       return Response.json(
@@ -49,9 +46,6 @@ export async function POST(request: Request) {
       currentPassword,
       user.password
     );
-    // #region agent log
-    fetch("http://127.0.0.1:7243/ingest/a07eb546-430e-4283-a5ad-88fd71cceafa",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({runId:"initial",hypothesisId:"H4",location:"update-password/route.ts:50",message:"Password compare result",data:{isPasswordCorrect},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     if (!isPasswordCorrect) {
       return Response.json(
         {
