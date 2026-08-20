@@ -27,7 +27,9 @@ export async function proxy(request: NextRequest) {
       pathname.startsWith("/dashboard") ||
       pathname.startsWith("/change-password") ||
       pathname.startsWith("/profile") ||
-      pathname.startsWith("/projects")
+      pathname.startsWith("/projects") ||
+      pathname.startsWith("/see-projects") ||
+      pathname.startsWith("/create-project")
     )
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -44,6 +46,8 @@ export const config = {
     "/dashboard/:path*",
     "/change-password",
     "/profile/:path*",
-    "/projects/:path*"
+    "/projects/:path*",
+    "/see-projects/:path*",
+    "/create-project/:path*",
   ],
 };
