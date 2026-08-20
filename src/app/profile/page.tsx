@@ -45,8 +45,7 @@ const Page = () => {
       const response = await axios.post("/api/update-profile", {
         username: session?.user.username,
         bio,
-        techStack: techStack.split(",").map((t) => t.trim()),
-        projectsJoined: projects.split(",").map((p) => p.trim()),
+        techStack: techStack.split(",").map((t) => t.trim()).filter(Boolean),
       });
       if (!response.data.success) {
         toast.error("Failed to update profile. Please try again.");
