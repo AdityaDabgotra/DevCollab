@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import mongoose from "mongoose";
 import ProjectModel from "@/models/Project";
 import UserModel from "@/models/User";
+import { createNotification } from "@/lib/notify";
 
 export async function POST(request: Request) {
   try {
@@ -89,6 +90,14 @@ export async function POST(request: Request) {
 
     await project.save();
     await user.save();
+
+    await createNotification({
+      recipient: project.owner,
+      type: "application_received",
+      message: `${user.username} applied to your project "${project.title}"`,
+      projectId: project._id as mongoose.Types.ObjectId,
+      actor: userObjectId,
+    });
 
     return Response.json(
       { success: true, message: "Successfully applied" },
