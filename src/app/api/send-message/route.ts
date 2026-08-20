@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/db";
 import mongoose from "mongoose";
+import { createNotification } from "@/lib/notify";
 
 export async function POST(req: Request) {
   try {
@@ -60,6 +61,23 @@ export async function POST(req: Request) {
       content: trimmed,
       timestamp: new Date(),
     });
+
+    const recipientIds = [
+      project.owner.toString(),
+      ...(project.members?.map((id) => id.toString()) || []),
+    ].filter((id, index, all) => id !== userId && all.indexOf(id) === index);
+
+    await Promise.all(
+      recipientIds.map((recipientId) =>
+        createNotification({
+          recipient: recipientId,
+          type: "new_message",
+          message: `${session.user.username} sent a message in "${project.title}"`,
+          projectId: project._id as mongoose.Types.ObjectId,
+          actor: userId,
+        })
+      )
+    );
 
     return Response.json(
       { success: true, message: "message stored" },
