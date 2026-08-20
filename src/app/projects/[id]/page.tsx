@@ -30,13 +30,14 @@ type Project = {
   techStack: string[];
   status: string;
   owner: ProjectOwner | null;
+  members: string[];
 };
 type Message = {
   projectId: string;
   sender: string;
   senderName: string;
   content: string;
-  timestamp: Date;
+  timestamp: Date | string;
 };
 
 const Page = () => {
@@ -60,6 +61,7 @@ const Page = () => {
     techStack: [],
     status: "",
     owner: null,
+    members: [],
   });
 
   useEffect(() => {
@@ -82,6 +84,9 @@ const Page = () => {
           techStack: data.techStack || [],
           status: data.status || "",
           owner: data.owner || null,
+          members: (data.members || []).map((member: { toString?: () => string } | string) =>
+            typeof member === "string" ? member : String(member)
+          ),
         });
       } catch (error) {
         console.error("Failed to fetch project", error);
@@ -106,7 +111,15 @@ const Page = () => {
     fetchMessages();
   }, [id]);
 
-  const isOwner = session?.user?.role === "projectOwner";
+  const ownerId =
+    typeof project.owner?._id === "string"
+      ? project.owner._id
+      : project.owner?._id != null
+        ? String(project.owner._id)
+        : "";
+  const isOwner = Boolean(session?.user?._id && ownerId === session.user._id);
+  const isMember = project.members.some((id) => id === session?.user?._id);
+  const canChat = isOwner || isMember;
 
   const acceptUser = async (applicantId: string) => {
     try {
@@ -145,39 +158,33 @@ const Page = () => {
     }
   };
   const sendMessage = async () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !canChat) return;
 
+    const content = newMessage.trim();
     const tempMessage: Message = {
       projectId: project.id,
       sender: session?.user?._id as string,
       senderName: session?.user?.username as string,
-      content: newMessage,
+      content,
       timestamp: new Date(),
     };
 
-    // optimistic UI update
     setMessages((prev) => [...prev, tempMessage]);
     setNewMessage("");
 
     try {
-      const response = await axios.post("/api/send-message", tempMessage);
+      const response = await axios.post("/api/send-message", {
+        projectId: project.id,
+        content,
+      });
       if (!response.data.success) {
-        toast.error("Failed to send message");
-        // revert optimistic update
-        setMessages((prev) =>
-          prev.filter(
-            (msg) =>
-              !(
-                msg.projectId === tempMessage.projectId &&
-                msg.sender === tempMessage.sender &&
-                msg.content === tempMessage.content &&
-                msg.timestamp.getTime() === tempMessage.timestamp.getTime()
-              )
-          )
-        );
+        throw new Error("Failed to send");
       }
     } catch (error) {
       toast.error("Failed to send message");
+      setMessages((prev) =>
+        prev.filter((msg) => msg !== tempMessage)
+      );
     }
   };
   const toggleProjectStatus = async () => {
@@ -338,17 +345,23 @@ const Page = () => {
 
       {/* RIGHT CHAT PANEL */}
       <div className="w-95 bg-white flex flex-col min-h-[89vh] sticky top-0">
-        {/* Chat Header */}
         <div className="p-4">
           <h3 className="font-bold text-[#1e0e4b]">Project Chat </h3>
         </div>
 
-        {/* Messages */}
+        {!canChat ? (
+          <div className="flex-1 px-4 text-sm text-zinc-500">
+            Chat is available after you join this project.
+          </div>
+        ) : (
+          <>
         <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3 scroll-smooth">
           {messages.map((message, index) => {
-            const isMe = message.sender === session?.user?._id;
-            console.log(message, isMe);
-            
+            const senderId =
+              typeof message.sender === "string"
+                ? message.sender
+                : String(message.sender);
+            const isMe = senderId === session?.user?._id;
 
             return (
               <div
@@ -381,7 +394,6 @@ const Page = () => {
           })}
         </div>
 
-        {/* Input */}
         <div className="p-4 pt-2">
           <div className="flex gap-2">
             <input
@@ -402,6 +414,8 @@ const Page = () => {
             </button>
           </div>
         </div>
+          </>
+        )}
       </div>
     </div>
   );

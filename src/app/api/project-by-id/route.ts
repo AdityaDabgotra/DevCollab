@@ -45,6 +45,7 @@ export async function POST(request: Request) {
           techStack: project.techStack,
           status: project.status,
           owner: project.owner,
+          members: project.members || [],
           applicants: applicantsData,
         },
       },
