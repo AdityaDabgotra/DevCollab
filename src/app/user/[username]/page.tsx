@@ -51,7 +51,7 @@ const Page = () => {
   if (!user) {
     return (
       <div className="flex min-h-[70vh] items-center justify-center text-signal">
-        Loading profile...
+        Loading profile....
       </div>
     );
   }
