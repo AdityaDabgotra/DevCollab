@@ -53,6 +53,8 @@ const Page = () => {
   const [showApplicants, setShowApplicants] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [applying, setApplying] = useState(false);
 
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [project, setProject] = useState<Project>({
@@ -108,9 +110,25 @@ const Page = () => {
         console.error("Failed to fetch messages", error);
       }
     };
+    const fetchAppliedStatus = async () => {
+      try {
+        const res = await axios.get("/api/user-projects");
+        if (res.data.success) {
+          const applied = (res.data.data || []).some(
+            (projectId: string) => String(projectId) === id
+          );
+          setAlreadyApplied(applied);
+        }
+      } catch (error) {
+        console.error("Failed to fetch application status", error);
+      }
+    };
     fetchProject();
     fetchMessages();
-  }, [id]);
+    if (session?.user?._id) {
+      fetchAppliedStatus();
+    }
+  }, [id, session?.user?._id]);
 
   const ownerId =
     typeof project.owner?._id === "string"
@@ -158,6 +176,29 @@ const Page = () => {
       toast.error("Something went wrong");
     }
   };
+  const applyToProject = async () => {
+    if (project.status !== "open" || alreadyApplied) return;
+
+    try {
+      setApplying(true);
+      const response = await axios.post("/api/apply-project", {
+        projectId: project.id,
+      });
+
+      if (!response.data.success) {
+        toast.error(response.data.message);
+        return;
+      }
+
+      setAlreadyApplied(true);
+      toast.success(`Applied to project ${project.title}`);
+    } catch (error) {
+      toast.error("Failed to apply. Please try again.");
+    } finally {
+      setApplying(false);
+    }
+  };
+
   const sendMessage = async () => {
     if (!newMessage.trim() || !canChat) return;
 
@@ -264,6 +305,30 @@ const Page = () => {
                 className="cut-btn bg-ember px-4 py-2 text-sm text-ink"
               >
                 View applicants
+              </button>
+            </div>
+          )}
+
+          {session && !isOwner && !isMember && (
+            <div className="pt-2">
+              <button
+                onClick={applyToProject}
+                disabled={applying || alreadyApplied || project.status !== "open"}
+                className={`cut-btn px-4 py-2 text-sm font-medium ${
+                  project.status !== "open"
+                    ? "border border-line text-fog"
+                    : alreadyApplied
+                      ? "bg-signal/20 text-signal"
+                      : "bg-ember text-ink"
+                }`}
+              >
+                {project.status !== "open"
+                  ? "Closed"
+                  : applying
+                    ? "Applying..."
+                    : alreadyApplied
+                      ? "Applied"
+                      : "Apply"}
               </button>
             </div>
           )}
