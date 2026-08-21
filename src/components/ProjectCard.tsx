@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import mongoose from "mongoose";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -33,7 +34,10 @@ const ProjectCard = ({
     setApplied(alreadyApplied);
   }, [alreadyApplied]);
 
-  const handleApply = async () => {
+  const handleApply = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (status !== "open" || applied) return;
 
     try {
@@ -60,7 +64,10 @@ const ProjectCard = ({
   const isClosed = status !== "open";
 
   return (
-    <div className="cut-frame relative flex min-h-80 flex-col justify-between p-6">
+    <Link
+      href={`/projects/${id}`}
+      className="cut-frame relative flex min-h-80 flex-col justify-between p-6"
+    >
       <span className="display absolute right-3 top-2 text-5xl text-ember/30">
         {String(index).padStart(2, "0")}
       </span>
@@ -95,8 +102,9 @@ const ProjectCard = ({
       >
         {isClosed ? "Closed" : loading ? "Applying..." : applied ? "Applied" : "Apply"}
       </button>
-    </div>
+    </Link>
   );
 };
 
 export default ProjectCard;
+
