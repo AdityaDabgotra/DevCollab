@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import ProjectComments from "@/components/ProjectComments";
 
 type Applicant = {
   _id: string;
@@ -267,6 +268,8 @@ const Page = () => {
             </div>
           )}
         </div>
+
+        {project.id && <ProjectComments projectId={project.id} />}
 
         {showApplicants && (
           <div className="cut-frame mt-8 p-6">
