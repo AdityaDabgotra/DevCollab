@@ -4,7 +4,8 @@ export type NotificationType =
   | "application_received"
   | "application_accepted"
   | "application_rejected"
-  | "new_message";
+  | "new_message"
+  | "new_comment";
 
 export interface INotification extends Document {
   recipient: mongoose.Types.ObjectId;
@@ -30,6 +31,7 @@ const NotificationSchema = new Schema<INotification>(
         "application_accepted",
         "application_rejected",
         "new_message",
+        "new_comment",
       ],
       required: [true, "Type is required"],
     },
